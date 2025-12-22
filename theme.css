@@ -204,6 +204,10 @@ input, select, textarea {
     font-weight: 600;
 }
 
+#show-tips-button {
+    display: none;
+}
+
 #create-character-form {
     display: none;
 }
