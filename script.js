@@ -73,8 +73,6 @@ characterResetButton.addEventListener('click', () => {
     characterNameInput.value = '';
     characterRaceSelect.value = 'Select a race';
 
-    createCharacterButton.disabled = false;
-
     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
         characterNameSexNoteBox.style.display = 'none';
     } else {
