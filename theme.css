@@ -214,6 +214,11 @@ input, select, textarea {
     font-weight: 600;
 }
 
+.note-box-text {
+    font-size: 14px;
+    color: #333333;
+}
+
 #show-tips-button {
     display: none;
 }
