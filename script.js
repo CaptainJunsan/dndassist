@@ -106,6 +106,9 @@ cancelCharacterCreationButton.addEventListener('click', () => {
 
     createCharacterFormContainer.style.display = 'none';
     characterCreationTipsSidebar.style.display = 'none';
+    characterNameSexNoteBox.style.display = 'none';
+    showTipsButton.style.display = 'none';
+    createCharacterButton.disabled = false;
 
     console.log('Character reset, fields cleared and form hidden');
 });
