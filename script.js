@@ -7,6 +7,8 @@ const characterNameInput = document.querySelector('#character-name');
 const characterRaceSelect = document.querySelector('#character-race');
 const cancelCharacterCreationButton = document.querySelector('#cancel-character-creation-button');
 const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
+const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
+const characterNameSexNoteBox = document.querySelector('#character-name-sex-note-box');
 const characterNameSexNoteTitle = document.querySelector('#character-name-sex-note-title');
 const characterNameSexNoteText = document.querySelector('#character-name-sex-note-text');
 
@@ -48,6 +50,14 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character form displayed');
 });
 
+closeTipsSidebarButton.addEventListener('click', () => {
+    console.log('Close tips sidebar button pressed');
+
+    characterCreationTipsSidebar.style.display = 'none';
+
+    console.log('Character creation tips sidebar hidden');
+})
+
 loadCharacterButton.addEventListener('click', () => {
     console.log('Load character button pressed');
 
@@ -63,6 +73,12 @@ characterResetButton.addEventListener('click', () => {
     characterRaceSelect.value = 'Select a race';
 
     createCharacterButton.disabled = false;
+
+    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+        characterNameSexNoteBox.style.display = 'none';
+    } else {
+        characterNameSexNoteBox.style.display = 'flex';
+    };
 
     console.log('Character reset complete');
 });
@@ -84,11 +100,17 @@ cancelCharacterCreationButton.addEventListener('click', () => {
 characterRaceSelect.addEventListener('change', () => {
     const selectedRace = characterRaceSelect.value;
 
+    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+        characterNameSexNoteBox.style.display = 'none';
+    } else {
+        characterNameSexNoteBox.style.display = 'flex';
+    };
+
     switch (selectedRace) {
         case 'Dwarf':
             characterNameSexNoteTitle.innerText = "Common Dwarf Names";
             characterNameSexNoteText.innerText = "Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Oain, Oarrak, Oelg, Eberk, Einkil, Fargrim, Flint, Gardain, Harbek, Kildrak, Morgran, Orsik, Oskar, Rangrim, Rurik, Taklinn, Thoradin, Thorin, Tordek, Traubon, Travok, Ulfgar, Veit, Vonda"
-    }
+    };
 });
 
 // --- END EVENT LISTENERS ---

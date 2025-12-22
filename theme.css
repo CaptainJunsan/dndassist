@@ -40,10 +40,23 @@
     line-height: 1.75em;
 }
 
+.sidebar-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
 .sidebar-title {
     /* Some style here... */
 
     font-weight: 500;
+}
+
+#close-tips-sidebar-button {
+    font-size: 14px;
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 #character-creation-tips-sidebar {
@@ -113,6 +126,7 @@ input, select, textarea {
     flex-direction: column;
     gap: 24px;
     width: fit-content;
+    max-width: 1200px;
 
     margin: 15px;
     padding: 15px;
@@ -156,6 +170,9 @@ input, select, textarea {
 }
 
 .note-box {
+    display: none;
+    flex-direction: column;
+    gap: 3px;
     border: 1px solid #cccccc;
     background-color: #ffffffd0;
     border-radius: 4px;
@@ -165,8 +182,8 @@ input, select, textarea {
     color: #333333;
 }
 
-.note-box > .title, .note-box-text {
-    text-wrap: wrap;
+.note-box > .title, .note-box > .note-box-text {
+    word-wrap: break-word;
 }
 
 .note-box > .title {
