@@ -74,8 +74,10 @@ showTipsButton.addEventListener('click', () => {
 
     if (characterCreationTipsSidebar.style.display == 'none') {
         characterCreationTipsSidebar.style.display = 'block';
+        showTipsButton.style.display = 'none';
     } else {
         characterCreationTipsSidebar.style.display = 'none';
+        showTipsButton.style.display = 'block';
     };
 
     console.log('Tips sidebar shown');
