@@ -75,7 +75,7 @@ showTipsButton.addEventListener('click', () => {
     if (characterCreationTipsSidebar.style.display == 'none') {
         characterCreationTipsSidebar.style.display = 'block';
         showTipsButton.style.display = 'none';
-    } else {
+    } else if (characterCreationTipsSidebar.style.display == 'block') {
         characterCreationTipsSidebar.style.display = 'none';
         showTipsButton.style.display = 'block';
     };
