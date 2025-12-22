@@ -103,12 +103,11 @@
     background-color: #dd1c1c;
     color: white;
     border: none;
-    transition: background-color 150ms, border 150ms;
+    transition: background-color 150ms;
 }
 
 .danger:hover {
     background-color: #a31010;
-    border: 1px solid #a31010;
 }
 
 input, select, textarea {
