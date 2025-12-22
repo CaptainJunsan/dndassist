@@ -15,8 +15,9 @@ const characterNameSexNoteText = document.querySelector('#character-name-sex-not
 // Character Object Template
 
 class Character {
-    constructor(name, race, charClass, level, attStr, attDex, attWis, attInt, attCha, attCon, hp, ac, speed, profBonus, skills, inventory, spells, backstory, notes) {
+    constructor(name, sex, race, charClass, level, attStr, attDex, attWis, attInt, attCha, attCon, hp, ac, speed, profBonus, skills, inventory, spells, backstory, notes) {
         this.name = name;
+        this.sex = sex;
         this.race = race;
         this.charClass = charClass;
         this.level = level;
@@ -109,7 +110,43 @@ characterRaceSelect.addEventListener('change', () => {
     switch (selectedRace) {
         case 'Dwarf':
             characterNameSexNoteTitle.innerText = "Common Dwarf Names";
-            characterNameSexNoteText.innerText = "Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Oain, Oarrak, Oelg, Eberk, Einkil, Fargrim, Flint, Gardain, Harbek, Kildrak, Morgran, Orsik, Oskar, Rangrim, Rurik, Taklinn, Thoradin, Thorin, Tordek, Traubon, Travok, Ulfgar, Veit, Vonda"
+            characterNameSexNoteText.innerText = "Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Oain, Oarrak, Oelg, Eberk, Einkil, Fargrim, Flint, Gardain, Harbek, Kildrak, Morgran, Orsik, Oskar, Rangrim, Rurik, Taklinn, Thoradin, Thorin, Tordek, Traubon, Travok, Ulfgar, Veit, Vonda";
+            break;
+        case 'Elf':
+            characterNameSexNoteTitle.innerText = "Common Elf Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Halfling':
+            characterNameSexNoteTitle.innerText = "Common Halfling Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Human':
+            characterNameSexNoteTitle.innerText = "Common Human Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Dragonborn':
+            characterNameSexNoteTitle.innerText = "Common Dragonborn Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Gnome':
+            characterNameSexNoteTitle.innerText = "Common Gnome Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Half-Elf':
+            characterNameSexNoteTitle.innerText = "Common Half-Elf Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Half-Orc':
+            characterNameSexNoteTitle.innerText = "Common Half-Orc Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        case 'Tiefling':
+            characterNameSexNoteTitle.innerText = "Common Tiefling Names";
+            characterNameSexNoteText.innerText = "Some names here...";
+            break;
+        default:
+            characterNameSexNoteBox.style.display = "none";
+            break;
     };
 });
 
