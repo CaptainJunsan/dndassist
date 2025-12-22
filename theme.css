@@ -12,6 +12,12 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.app-title-description {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
 .sidebar {
     height: 100vh;
     padding: 24px;
