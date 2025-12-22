@@ -9,7 +9,7 @@ const characterRaceSelect = document.querySelector('#character-race');
 const cancelCharacterCreationButton = document.querySelector('#cancel-character-creation-button');
 const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
 const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
-const characterNameSexNoteBox = document.querySelector('#character-name-sex-note-box');
+const characterNameSexNoteBox = document.querySelector('#character-note-box');
 const characterNameSexNoteTitle = document.querySelector('#character-name-sex-note-title');
 const characterNameSexNoteText = document.querySelector('#character-name-sex-note-text');
 
