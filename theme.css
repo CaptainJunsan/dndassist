@@ -42,6 +42,8 @@
 
 .sidebar-title {
     /* Some style here... */
+
+    font-weight: 500;
 }
 
 #character-creation-tips-sidebar {
@@ -161,6 +163,10 @@ input, select, textarea {
     padding: 8px;
     font-size: 14px;
     color: #333333;
+}
+
+.note-box > .title, .note-box-text {
+    text-wrap: wrap;
 }
 
 .note-box > .title {
