@@ -2,6 +2,7 @@
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
+const showTipsButton = document.querySelector('#show-tips-button');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
 const characterRaceSelect = document.querySelector('#character-race');
@@ -55,6 +56,7 @@ closeTipsSidebarButton.addEventListener('click', () => {
     console.log('Close tips sidebar button pressed');
 
     characterCreationTipsSidebar.style.display = 'none';
+    showTipsButton.style.display = 'block';
 
     console.log('Character creation tips sidebar hidden');
 })
@@ -65,6 +67,18 @@ loadCharacterButton.addEventListener('click', () => {
     alert('Load character feature not yet available.');
 
     console.log('Load character alert displayed');
+})
+
+showTipsButton.addEventListener('click', () => {
+    console.log('Show tips button pressed');
+
+    if (characterCreationTipsSidebar.style.display == 'none') {
+        characterCreationTipsSidebar.style.display = 'block';
+    } else {
+        characterCreationTipsSidebar.style.display = 'none';
+    };
+
+    console.log('Tips sidebar shown');
 })
 
 characterResetButton.addEventListener('click', () => {
