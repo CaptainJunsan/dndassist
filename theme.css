@@ -59,6 +59,14 @@
     font-weight: 500;
 }
 
+@media screen and (max-width: 1000px) {
+    .sidebar {
+        width: 80vw;
+        height: fit-content;
+        align-self: center;
+    }
+}
+
 #close-tips-sidebar-button {
     font-size: 14px;
     padding: 2px 8px;
