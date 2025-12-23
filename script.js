@@ -16,7 +16,8 @@ const characterNameSexNoteText = document.querySelector('#character-name-sex-not
 
 // SCREEN WIDTH
 
-const deviceScreenWidth = screen.width;
+const deviceScreenWidth = window.innerWidth;
+// Previously used: screen.width;
 
 // CHARACTER OBJECT TEMPLATE
 
@@ -45,7 +46,29 @@ class Character {
     }
 }
 
+// Control display of tips sidebar button based on screen width
+// USE CASE:
+// If narrow (mobile): Show button on character creation but keep sidebar hidden
+// Else if wide: keep default behavior
+if (window.innerWidth > 1000) {
+    // Add logic here...
+} else if (window.innerWidth <= 1000) {
+    // Add logic here...
+}
+
 // EVENT LISTENERS
+
+window.addEventListener('resize', function() {
+  // Get the new window width
+  const newWidth = window.innerWidth;
+  console.log('Window resized to: ' + newWidth + 'px');
+
+  if (newWidth > 1000) {
+    // Add logic here...
+  } else if (newWidth <= 1000) {
+    // Add logic here...
+  }
+});
 
 // Create Character Button Events
 createCharacterButton.addEventListener('click', () => {
@@ -92,6 +115,7 @@ showTipsButton.addEventListener('click', () => {
     console.log('Tips sidebar shown');
 })
 
+// Reset CHaracter Creation Button Events
 characterResetButton.addEventListener('click', () => {
     console.log('Character reset button pressed');
 
@@ -107,6 +131,7 @@ characterResetButton.addEventListener('click', () => {
     console.log('Character reset complete');
 });
 
+// Cancel Character Creation Button Events
 cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Cancel character creation button pressed');
 
@@ -122,8 +147,7 @@ cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Character reset, fields cleared and form hidden');
 });
 
-// Set note contents
-
+// Notebox Events
 characterRaceSelect.addEventListener('change', () => {
     const selectedRace = characterRaceSelect.value;
 
