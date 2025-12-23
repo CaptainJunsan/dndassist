@@ -54,17 +54,21 @@
 }
 
 .sidebar-title {
-    /* Some style here... */
-
     font-weight: 500;
 }
 
 @media screen and (max-width: 800px) {
     .sidebar {
+        background-color: #f0f0f0;
+        border-left: 1px solid #ccc;
+    }
+
+    .right,
+    .left {
+        position: fixed;
         margin: auto;
         width: 80vw;
         height: fit-content;
-        align-self: center;
     }
 }
 
@@ -79,7 +83,10 @@
     display: none;
 }
 
-.button, input, select, textarea {
+.button,
+input,
+select,
+textarea {
     font-size: 16px;
 }
 
@@ -128,7 +135,9 @@
     background-color: #a31010;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
     padding: 6px 7px 8px 7px;
@@ -144,7 +153,8 @@ input, select, textarea {
     gap: 15px;
 }
 
-.form, .container {
+.form,
+.container {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -214,11 +224,12 @@ input, select, textarea {
     color: #333333;
 }
 
-.note-box > .title, .note-box > .note-box-text {
+.note-box>.title,
+.note-box>.note-box-text {
     word-wrap: break-word;
 }
 
-.note-box > .title {
+.note-box>.title {
     font-size: 16px;
     font-weight: 600;
 }
