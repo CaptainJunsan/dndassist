@@ -69,6 +69,10 @@
         margin: auto;
         width: 80vw;
         height: fit-content;
+
+        right: auto;
+        left: auto;
+        top: auto;
     }
 }
 
