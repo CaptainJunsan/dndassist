@@ -59,20 +59,23 @@
 
 @media screen and (max-width: 800px) {
     .sidebar {
+
         background-color: #f0f0f0;
-        border-left: 1px solid #ccc;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
     .right,
     .left {
         position: fixed;
-        margin: auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
         width: 80vw;
         height: fit-content;
 
         right: auto;
         left: auto;
-        top: auto;
     }
 }
 
