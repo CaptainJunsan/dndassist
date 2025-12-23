@@ -70,12 +70,12 @@
         position: fixed;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 20px;
         width: 80vw;
         height: fit-content;
-
-        right: auto;
-        left: auto;
+        
+        left: 10vw;
+        right: 10vw;
+        top: 50px;
     }
 }
 
