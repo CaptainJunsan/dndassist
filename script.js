@@ -1,4 +1,5 @@
-// DOM Declarations
+// DOM DECLARATIONS
+
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
@@ -13,7 +14,11 @@ const characterNameSexNoteBox = document.querySelector('#character-note-box');
 const characterNameSexNoteTitle = document.querySelector('#character-name-sex-note-title');
 const characterNameSexNoteText = document.querySelector('#character-name-sex-note-text');
 
-// Character Object Template
+// SCREEN WIDTH
+
+const deviceScreenWidth = screen.width;
+
+// CHARACTER OBJECT TEMPLATE
 
 class Character {
     constructor(name, sex, race, charClass, level, attStr, attDex, attWis, attInt, attCha, attCon, hp, ac, speed, profBonus, skills, inventory, spells, backstory, notes) {
@@ -40,8 +45,9 @@ class Character {
     }
 }
 
-// Event Listeners
+// EVENT LISTENERS
 
+// Create Character Button Events
 createCharacterButton.addEventListener('click', () => {
     console.log('Create character button pressed');
 
@@ -52,6 +58,7 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character form displayed');
 });
 
+// Close Sidebar Button Events
 closeTipsSidebarButton.addEventListener('click', () => {
     console.log('Close tips sidebar button pressed');
 
@@ -61,6 +68,7 @@ closeTipsSidebarButton.addEventListener('click', () => {
     console.log('Character creation tips sidebar hidden');
 })
 
+// Load Character Button Events
 loadCharacterButton.addEventListener('click', () => {
     console.log('Load character button pressed');
 
@@ -69,6 +77,7 @@ loadCharacterButton.addEventListener('click', () => {
     console.log('Load character alert displayed');
 })
 
+// Show Sidebar Button Events
 showTipsButton.addEventListener('click', () => {
     console.log('Show tips button pressed');
 

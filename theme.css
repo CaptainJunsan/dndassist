@@ -58,6 +58,10 @@
 }
 
 @media screen and (max-width: 800px) {
+    #show-tips-button {
+        display: block;
+    }
+    
     .sidebar {
 
         background-color: #f0f0f0;
