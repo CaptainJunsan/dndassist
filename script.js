@@ -17,7 +17,6 @@ const characterNameSexNoteText = document.querySelector('#character-name-sex-not
 // SCREEN WIDTH
 
 const DESKTOP_BREAKPOINT = 1000;
-const deviceScreenWidth = window.innerWidth;
 // Previously used: screen.width;
 
 // *** APP STATE ***
@@ -32,67 +31,107 @@ const appState = {
 // UPDATE UI FUNCTION
 
 function updateUIVisibility() {
-    // Add Logic here...
-}
+    // 1. Read the app state
+    const { screenWidth, isCharFormVisible, isTipsSidebarVisible } = appState;
+
+    // 2. Update the character form visibility
+    createCharacterFormContainer.style.display = isCharFormVisible ? 'block' : 'none';
+
+    // 3. Apply changes to the DOM
+    if (isCharFormVisible) {
+        characterCreationTipsSidebar.style.display = isTipsSidebarVisible ? 'block' : 'none';
+        showTipsButton.style.display = isTipsSidebarVisible ? 'none' : 'block';
+    } else {
+        characterCreationTipsSidebar.style.display = 'none';
+        showTipsButton.style.display = 'none';
+    }
+};
 
 // CHARACTER OBJECT TEMPLATE
 
 class Character {
-    constructor(name, sex, race, charClass, level, attStr, attDex, attWis, attInt, attCha, attCon, hp, ac, speed, profBonus, skills, inventory, spells, backstory, notes) {
-        this.name = name;
-        this.sex = sex;
-        this.race = race;
-        this.charClass = charClass;
-        this.level = level;
-        this.attStr = attStr;
-        this.attDex = attDex;
-        this.attWis = attWis;
-        this.attInt = attInt;
-        this.attCha = attCha;
-        this.attCon = attCon;
-        this.hp = hp;
-        this.ac = ac;
-        this.speed = speed;
-        this.profBonus = profBonus;
-        this.skills = skills;
-        this.inventory = inventory;
-        this.spells = spells;
-        this.backstory = backstory;
-        this.notes = notes;
+    constructor(data = {}) {
+        // === BASIC INFO ===
+        this.name = data.name || '';
+        this.sex = data.sex || '';
+        this.race = data.race || '';
+        this.subrace = data.subrace || '';
+        this.charClass = data.charClass || '';
+        this.subclass = data.subclass || '';
+        this.level = data.level || 1;
+        this.background = data.background || '';
+        this.alignment = data.alignment || '';
+        this.experiencePoints = data.experiencePoints || 0;
+        
+        // === ABILITY SCORES ===
+        this.attStr = data.attStr || 10;
+        this.attDex = data.attDex || 10;
+        this.attCon = data.attCon || 10;
+        this.attInt = data.attInt || 10;
+        this.attWis = data.attWis || 10;
+        this.attCha = data.attCha || 10;
+        
+        // === DERIVED STATS ===
+        this.hpMax = data.hpMax || 0;
+        this.ac = data.ac || 10;
+        this.initiative = data.initiative || 0;
+        this.speed = data.speed || 30;
+        this.profBonus = data.profBonus || 2;
+        this.passivePerception = data.passivePerception || 10;
+        
+        // === PROFICIENCIES ===
+        this.skills = data.skills || {}; // e.g., {athletics: true, perception: true}
+        this.savingThrows = data.savingThrows || []; // e.g., ['str', 'con']
+        this.armorProficiencies = data.armorProficiencies || [];
+        this.weaponProficiencies = data.weaponProficiencies || [];
+        this.toolProficiencies = data.toolProficiencies || [];
+        this.languages = data.languages || ['Common'];
+        
+        // === EQUIPMENT ===
+        this.inventory = data.inventory || [];
+        this.currency = data.currency || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+        
+        // === SPELLCASTING (if applicable) ===
+        this.spellcastingAbility = data.spellcastingAbility || null; // 'int', 'wis', 'cha', or null
+        this.spellSaveDC = data.spellSaveDC || null;
+        this.spellAttackBonus = data.spellAttackBonus || null;
+        this.cantripsKnown = data.cantripsKnown || [];
+        this.spells = data.spells || []; // Known spells or prepared spells
+        this.spellSlots = data.spellSlots || {}; // e.g., {1: 2, 2: 0} - max slots per level
+        
+        // === FEATURES & TRAITS ===
+        this.racialTraits = data.racialTraits || [];
+        this.classFeatures = data.classFeatures || [];
+        this.feats = data.feats || []; // Optional rule
+        
+        // === CHARACTER STORY ===
+        this.backstory = data.backstory || '';
+        this.personality = data.personality || '';
+        this.ideals = data.ideals || '';
+        this.bonds = data.bonds || '';
+        this.flaws = data.flaws || '';
+        this.appearance = data.appearance || '';
+        this.notes = data.notes || '';
     }
-}
-
-// Control display of tips sidebar button based on screen width
-// USE CASE:
-// If narrow (mobile): Show button on character creation but keep sidebar hidden
-// Else if wide: keep default behavior
-if (window.innerWidth > DESKTOP_BREAKPOINT) {
-    // Add logic here...
-} else if (window.innerWidth <= DESKTOP_BREAKPOINT) {
-    // Add logic here...
 }
 
 // EVENT LISTENERS
 
 window.addEventListener('resize', function () {
     // Get the new window width
-    deviceScreenWidth = window.innerWidth;
-    console.log('Window resized to: ' + deviceScreenWidth + 'px');
-
-    if (deviceScreenWidth > DESKTOP_BREAKPOINT) {
-        // Add logic here...
-    } else if (deviceScreenWidth <= DESKTOP_BREAKPOINT) {
-        // Add logic here...
-    }
+    appState.screenWidth = window.innerWidth;
+    updateUIVisibility();
+    console.log('Window resized to: ' + appState.screenWidth + 'px');
 });
 
 // Create Character Button Events
 createCharacterButton.addEventListener('click', () => {
     console.log('Create character button pressed');
 
-    createCharacterFormContainer.style.display = 'block';
+    appState.isCharFormVisible = true;
+    appState.isTipsSidebarVisible = (appState.screenWidth > DESKTOP_BREAKPOINT);
+    updateUIVisibility();
     createCharacterButton.disabled = true;
-    characterCreationTipsSidebar.style.display = 'block';
 
     console.log('Create character form displayed');
 });
@@ -101,8 +140,8 @@ createCharacterButton.addEventListener('click', () => {
 closeTipsSidebarButton.addEventListener('click', () => {
     console.log('Close tips sidebar button pressed');
 
-    characterCreationTipsSidebar.style.display = 'none';
-    showTipsButton.style.display = 'block';
+    appState.isTipsSidebarVisible = false;
+    updateUIVisibility();
 
     console.log('Character creation tips sidebar hidden');
 })
@@ -120,18 +159,13 @@ loadCharacterButton.addEventListener('click', () => {
 showTipsButton.addEventListener('click', () => {
     console.log('Show tips button pressed');
 
-    if (characterCreationTipsSidebar.style.display == 'none') {
-        characterCreationTipsSidebar.style.display = 'block';
-        showTipsButton.style.display = 'none';
-    } else if (characterCreationTipsSidebar.style.display == 'block') {
-        characterCreationTipsSidebar.style.display = 'none';
-        showTipsButton.style.display = 'block';
-    };
+    appState.isTipsSidebarVisible = !appState.isTipsSidebarVisible;
+    updateUIVisibility();
 
     console.log('Tips sidebar shown');
 })
 
-// Reset CHaracter Creation Button Events
+// Reset Character Creation Button Events
 characterResetButton.addEventListener('click', () => {
     console.log('Character reset button pressed');
 
@@ -154,10 +188,11 @@ cancelCharacterCreationButton.addEventListener('click', () => {
     // Trigger reset button to clear form fields
     characterResetButton.click();
 
-    createCharacterFormContainer.style.display = 'none';
-    characterCreationTipsSidebar.style.display = 'none';
-    characterNameSexNoteBox.style.display = 'none';
-    showTipsButton.style.display = 'none';
+    appState.isCharFormVisible = false;
+    appState.isTipsSidebarVisible = false;
+
+    updateUIVisibility();
+
     createCharacterButton.disabled = false;
 
     console.log('Character reset, fields cleared and form hidden');
