@@ -16,8 +16,24 @@ const characterNameSexNoteText = document.querySelector('#character-name-sex-not
 
 // SCREEN WIDTH
 
+const DESKTOP_BREAKPOINT = 1000;
 const deviceScreenWidth = window.innerWidth;
 // Previously used: screen.width;
+
+// *** APP STATE ***
+
+const appState = {
+    screenWidth: window.innerWidth,
+    isCharFormVisible: false,
+    isTipsSidebarVisible: false,
+    isShowTipsButtonVisible: false
+};
+
+// UPDATE UI FUNCTION
+
+function updateUIVisibility() {
+    // Add Logic here...
+}
 
 // CHARACTER OBJECT TEMPLATE
 
@@ -50,24 +66,24 @@ class Character {
 // USE CASE:
 // If narrow (mobile): Show button on character creation but keep sidebar hidden
 // Else if wide: keep default behavior
-if (window.innerWidth > 1000) {
+if (window.innerWidth > DESKTOP_BREAKPOINT) {
     // Add logic here...
-} else if (window.innerWidth <= 1000) {
+} else if (window.innerWidth <= DESKTOP_BREAKPOINT) {
     // Add logic here...
 }
 
 // EVENT LISTENERS
 
-window.addEventListener('resize', function() {
-  // Get the new window width
-  const newWidth = window.innerWidth;
-  console.log('Window resized to: ' + newWidth + 'px');
+window.addEventListener('resize', function () {
+    // Get the new window width
+    deviceScreenWidth = window.innerWidth;
+    console.log('Window resized to: ' + deviceScreenWidth + 'px');
 
-  if (newWidth > 1000) {
-    // Add logic here...
-  } else if (newWidth <= 1000) {
-    // Add logic here...
-  }
+    if (deviceScreenWidth > DESKTOP_BREAKPOINT) {
+        // Add logic here...
+    } else if (deviceScreenWidth <= DESKTOP_BREAKPOINT) {
+        // Add logic here...
+    }
 });
 
 // Create Character Button Events
