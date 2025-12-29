@@ -4,15 +4,21 @@ const createCharacterButton = document.querySelector('#create-character-button')
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
 const showTipsButton = document.querySelector('#show-tips-button');
+const nextOneButton = document.querySelector('#next-one');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
 const characterRaceSelect = document.querySelector('#character-race');
 const cancelCharacterCreationButton = document.querySelector('#cancel-character-creation-button');
 const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
 const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
-const characterNameSexNoteBox = document.querySelector('#character-note-box');
+const characterNoteBox = document.querySelector('#character-note-box');
 const characterNameSexNoteTitle = document.querySelector('#character-name-sex-note-title');
 const characterNameSexNoteText = document.querySelector('#character-name-sex-note-text');
+
+const alertBox = document.querySelector('#main-alert-box');
+const alertBoxTitle = alertBox.querySelector('.title');
+const alertBoxDescription = alertBox.querySelector('.description');
+const closeAlertBoxButton = document.querySelector('#close-alert-box-button');
 
 // SCREEN WIDTH
 
@@ -62,7 +68,7 @@ class Character {
         this.background = data.background || '';
         this.alignment = data.alignment || '';
         this.experiencePoints = data.experiencePoints || 0;
-        
+
         // === ABILITY SCORES ===
         this.attStr = data.attStr || 10;
         this.attDex = data.attDex || 10;
@@ -70,7 +76,7 @@ class Character {
         this.attInt = data.attInt || 10;
         this.attWis = data.attWis || 10;
         this.attCha = data.attCha || 10;
-        
+
         // === DERIVED STATS ===
         this.hpMax = data.hpMax || 0;
         this.ac = data.ac || 10;
@@ -78,7 +84,7 @@ class Character {
         this.speed = data.speed || 30;
         this.profBonus = data.profBonus || 2;
         this.passivePerception = data.passivePerception || 10;
-        
+
         // === PROFICIENCIES ===
         this.skills = data.skills || {}; // e.g., {athletics: true, perception: true}
         this.savingThrows = data.savingThrows || []; // e.g., ['str', 'con']
@@ -86,11 +92,11 @@ class Character {
         this.weaponProficiencies = data.weaponProficiencies || [];
         this.toolProficiencies = data.toolProficiencies || [];
         this.languages = data.languages || ['Common'];
-        
+
         // === EQUIPMENT ===
         this.inventory = data.inventory || [];
         this.currency = data.currency || { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
-        
+
         // === SPELLCASTING (if applicable) ===
         this.spellcastingAbility = data.spellcastingAbility || null; // 'int', 'wis', 'cha', or null
         this.spellSaveDC = data.spellSaveDC || null;
@@ -98,12 +104,12 @@ class Character {
         this.cantripsKnown = data.cantripsKnown || [];
         this.spells = data.spells || []; // Known spells or prepared spells
         this.spellSlots = data.spellSlots || {}; // e.g., {1: 2, 2: 0} - max slots per level
-        
+
         // === FEATURES & TRAITS ===
         this.racialTraits = data.racialTraits || [];
         this.classFeatures = data.classFeatures || [];
         this.feats = data.feats || []; // Optional rule
-        
+
         // === CHARACTER STORY ===
         this.backstory = data.backstory || '';
         this.personality = data.personality || '';
@@ -115,7 +121,7 @@ class Character {
     }
 }
 
-// EVENT LISTENERS
+// ============== EVENT LISTENERS ==============
 
 window.addEventListener('resize', function () {
     // Get the new window width
@@ -129,7 +135,8 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character button pressed');
 
     appState.isCharFormVisible = true;
-    appState.isTipsSidebarVisible = (appState.screenWidth > DESKTOP_BREAKPOINT);
+    appState.isTipsSidebarVisible = false;
+    // appState.isTipsSidebarVisible = (appState.screenWidth > DESKTOP_BREAKPOINT);
     updateUIVisibility();
     createCharacterButton.disabled = true;
 
@@ -165,6 +172,22 @@ showTipsButton.addEventListener('click', () => {
     console.log('Tips sidebar shown');
 })
 
+// Next Buttons Events
+nextOneButton.addEventListener('click', () => {
+    console.log('Next button pressed');
+
+    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+        
+        alertBox.style.display = 'flex';
+        alertBoxTitle.innerText = 'No race selected';
+        alertBoxDescription.innerText = 'Please select a race in order to proceed to the next steps.';
+
+        console.log('No race selected - alert displayed');
+    } else {
+        return;
+    }
+});
+
 // Reset Character Creation Button Events
 characterResetButton.addEventListener('click', () => {
     console.log('Character reset button pressed');
@@ -173,9 +196,9 @@ characterResetButton.addEventListener('click', () => {
     characterRaceSelect.value = 'Select a race';
 
     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-        characterNameSexNoteBox.style.display = 'none';
+        characterNoteBox.style.display = 'none';
     } else {
-        characterNameSexNoteBox.style.display = 'flex';
+        characterNoteBox.style.display = 'flex';
     };
 
     console.log('Character reset complete');
@@ -203,9 +226,9 @@ characterRaceSelect.addEventListener('change', () => {
     const selectedRace = characterRaceSelect.value;
 
     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-        characterNameSexNoteBox.style.display = 'none';
+        characterNoteBox.style.display = 'none';
     } else {
-        characterNameSexNoteBox.style.display = 'flex';
+        characterNoteBox.style.display = 'flex';
     };
 
     switch (selectedRace) {
@@ -246,10 +269,19 @@ characterRaceSelect.addEventListener('change', () => {
             characterNameSexNoteText.innerText = "Some names here...";
             break;
         default:
-            characterNameSexNoteBox.style.display = "none";
+            characterNoteBox.style.display = "none";
             break;
     };
 });
+
+// Alert Box Events
+closeAlertBoxButton.addEventListener('click', () => {
+    console.log('Close alert box button pressed');
+
+    alertBox.style.display = 'none';
+
+    console.log('Alert box closed');
+})
 
 // --- END EVENT LISTENERS ---
 // ---------------------------

@@ -30,7 +30,7 @@
         <p class="description">Create a unique character with the help of the official 5e rules stipulated in the 2014
             Player's Handbook.</p>
         <div class="horizontal-container">
-            <form action="">
+            <form action="" class="character-form">
                 <div class="form-row">
                     <label for="character-race">Select a race
                         <select name="character-race" id="character-race">
@@ -77,6 +77,7 @@
                     </label>
                 </div>
                 <div class="button-row">
+                    <button type="button" class="button" id="next-one">Next</button>
                     <button type="button" class="button" id="character-reset-button">Reset</button>
                     <button type="button" class="button danger" id="cancel-character-creation-button">Cancel</button>
                 </div>
@@ -95,9 +96,17 @@
     <div class="sidebar right" id="character-creation-tips-sidebar">
         <div class="sidebar-title-row">
             <h2 class="title sidebar-title">Tips & Tricks</h2>
-            <button type="button" class="button danger" id="close-tips-sidebar-button">Close</button>
+            <button type="button" class="button danger close-button" id="close-tips-sidebar-button">Close</button>
         </div>
     </div>
+
+    <div class="alert-box" id="main-alert-box">
+        <h3 class="title">This is an error</h3>
+        <p class="description">This is the description for said error.</p>
+        <button type="button" class="button danger close-button" id="close-alert-box-button">X</button>
+    </div>
+
+    <!-- Script tag -->
     <script src="script.js"></script>
 </body>
 

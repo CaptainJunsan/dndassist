@@ -12,6 +12,13 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.character-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
 .app-title-description {
     display: flex;
     flex-direction: column;
@@ -84,18 +91,11 @@
         margin-right: auto;
         width: 80vw;
         height: fit-content;
-        
+
         left: 10vw;
         right: 10vw;
         top: 50px;
     }
-}
-
-#close-tips-sidebar-button {
-    font-size: 14px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
 }
 
 .button,
@@ -137,6 +137,13 @@ textarea {
 .button-row {
     display: flex;
     gap: 12px;
+    width: 100%;
+}
+
+.character-form > .button-row {
+    justify-content: flex-end;
+    padding-top: 25px;
+    border-top: 1px solid #cccccc;
 }
 
 .danger {
@@ -256,4 +263,35 @@ textarea {
 
 #create-character-form {
     display: none;
+}
+
+.close-button {
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.alert-box {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 15px 50px 15px 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.alert-box > #close-alert-box-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    content: 'X';
 }
