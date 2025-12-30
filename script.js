@@ -294,19 +294,21 @@ showTipsButton.addEventListener('click', () => {
 
 // Next Buttons Events
 nextOneButton.addEventListener('click', () => {
-    console.log('Next button pressed');
+    // Dummy function contents
 
-    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+    // console.log('Next button pressed');
 
-        alertBox.style.display = 'flex';
-        alertBoxTitle.innerText = 'No race selected';
-        alertBoxDescription.innerText = 'Please select a race in order to proceed to the next steps.';
-        characterRaceSelect.focus();
+    // if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
 
-        console.log('No race selected - alert displayed');
-    } else {
-        return;
-    }
+    //     alertBox.style.display = 'flex';
+    //     alertBoxTitle.innerText = 'Character incomplete';
+    //     alertBoxDescription.innerText = 'Please complete all necessary fields in order to continue.';
+    //     characterRaceSelect.focus();
+
+    //     console.log('No race selected - alert displayed');
+    // } else {
+    //     return;
+    // }
 });
 
 // Reset Character Creation Button Events
