@@ -41,11 +41,11 @@ function updateUIVisibility() {
     const { screenWidth, isCharFormVisible, isTipsSidebarVisible } = appState;
 
     // 2. Update the character form visibility
-    createCharacterFormContainer.style.display = isCharFormVisible ? 'block' : 'none';
+    createCharacterFormContainer.style.display = isCharFormVisible ? 'flex' : 'none';
 
     // 3. Apply changes to the DOM
     if (isCharFormVisible) {
-        characterCreationTipsSidebar.style.display = isTipsSidebarVisible ? 'block' : 'none';
+        characterCreationTipsSidebar.style.display = isTipsSidebarVisible ? 'flex' : 'none';
         showTipsButton.style.display = isTipsSidebarVisible ? 'none' : 'block';
         characterOverviewContainer.style.display = 'flex';
     } else {
@@ -58,20 +58,71 @@ function updateUIVisibility() {
 // UPDATE CHARACTER OVERVIEW FUNCTION
 
 function updateCharacterOverview() {
-    // if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-    //     characterOverviewContainer.style.display = 'none';
-    // } else {
-    //     characterOverviewContainer.style.display = 'flex';
-    // };
-
-    // Clear previous overview contents before updating
-    characterOverviewContainer.innerHTML = '';
-
-    // Update with new overview contents
-    characterOverviewContainer.innerHTML = `<p class="title">Name: </p></br><p class="column-container-text">${(characterNameInput.value == '') ? characterNameInput.placeholder : characterNameInput.value}</p></br>`;
-    characterOverviewContainer.innerHTML += `<p class="title">Race: </p></br><p class="column-container-text">${characterRaceSelect.value}</p></br>`;
-    characterOverviewContainer.innerHTML += `<p class="title">Class: </p></br><p class="column-container-text">${characterClassSelect.value}</p></br>`;
-    characterOverviewContainer.innerHTML += `<p class="title">Sex: </p></br><p class="column-container-text">${characterSexSelect.value}</p></br>`;
+    const name = characterNameInput.value || characterNameInput.placeholder;
+    const race = characterRaceSelect.value;
+    const charClass = characterClassSelect.value;
+    const sex = characterSexSelect.value;
+    
+    // Get race data (if available)
+    const raceData = races[race] || null;
+    const classData = classes[charClass] || null;
+    
+    characterOverviewContainer.innerHTML = `
+        <div class="overview-section">
+            <h3 class="overview-title">Character Overview</h3>
+            
+            <!-- Basic Info -->
+            <div class="overview-stat">
+                <span class="stat-label">Name:</span>
+                <span class="stat-final-value">${name}</span>
+            </div>
+            
+            <div class="overview-stat">
+                <span class="stat-label">Race:</span>
+                <span class="stat-final-value">${race}</span>
+            </div>
+            
+            <div class="overview-stat">
+                <span class="stat-label">Class:</span>
+                <span class="stat-final-value">${charClass}</span>
+            </div>
+            
+            <div class="overview-stat">
+                <span class="stat-label">Sex:</span>
+                <span class="stat-final-value">${sex}</span>
+            </div>
+            
+            ${raceData || classData ? `
+                <div class="overview-divider"></div>
+                <h4 class="overview-subtitle">Character Stats</h4>
+                
+                ${raceData ? `
+                    <!-- Speed -->
+                    <div class="overview-stat">
+                        <span class="stat-label">Speed:</span>
+                        <span class="stat-final-value">${raceData.speed} ft</span>
+                        <span class="stat-explanation">(from <span class="modifier-source">Race</span>)</span>
+                    </div>
+                    
+                    <!-- Size -->
+                    <div class="overview-stat">
+                        <span class="stat-label">Size:</span>
+                        <span class="stat-final-value">${raceData.size}</span>
+                        <span class="stat-explanation">(from <span class="modifier-source">Race</span>)</span>
+                    </div>
+                ` : ''}
+                
+                ${classData ? `
+                    <!-- Hit Die -->
+                    <div class="overview-stat">
+                        <span class="stat-label">Hit Die:</span>
+                        <span class="stat-final-value">${classData.hitDie}</span>
+                        <span class="stat-explanation">(from <span class="modifier-source">Class</span>)</span>
+                    </div>
+                ` : ''}
+            ` : ''}
+        </div>
+    `;
 }
 
 // CHARACTER OBJECT TEMPLATE
