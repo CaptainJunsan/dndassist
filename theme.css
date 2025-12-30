@@ -12,6 +12,13 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+}
+
 .character-form {
     display: flex;
     flex-direction: column;
@@ -146,6 +153,17 @@ textarea {
     border-top: 1px solid #cccccc;
 }
 
+.secondary {
+    background-color: #ffffff;
+    color: #000000;
+    border: solid 1px #000000;
+    box-sizing: border-box;
+}
+
+.secondary:hover {
+    background-color: #eeeeee;
+}
+
 .danger {
     background-color: #dd1c1c;
     color: white;
@@ -183,9 +201,11 @@ textarea {
     width: fit-content;
     max-width: 1200px;
 
-    margin: 15px;
-    padding: 15px;
     border-radius: 5px;
+}
+
+.form {
+    padding: 15px;
 }
 
 #create-character-form {
@@ -211,6 +231,7 @@ textarea {
 }
 
 .form-title {
+    margin-top: -11px;
     margin-bottom: 5px;
     font-weight: 500;
     text-transform: uppercase;
@@ -233,12 +254,12 @@ textarea {
     height: 100%;
 }
 
-.note-box {
+.column-container {
     display: none;
     flex-direction: column;
     gap: 3px;
     border: 1px solid #cccccc;
-    background-color: #ffffffd0;
+    background-color: #ffffff;
     border-radius: 4px;
     flex-grow: 1;
     padding: 8px;
@@ -246,19 +267,21 @@ textarea {
     color: #333333;
 }
 
-.note-box>.title,
-.note-box>.note-box-text {
+.column-container > .title,
+.column-container > .column-container-text {
     word-wrap: break-word;
 }
 
-.note-box>.title {
+.column-container > .title {
     font-size: 16px;
     font-weight: 600;
+    margin-bottom: -15px;
 }
 
-.note-box-text {
+.column-container-text {
     font-size: 14px;
     color: #333333;
+    margin-top: -5px;
 }
 
 #create-character-form {

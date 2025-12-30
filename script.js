@@ -8,12 +8,12 @@ const nextOneButton = document.querySelector('#next-one');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
 const characterRaceSelect = document.querySelector('#character-race');
+const characterClassSelect = document.querySelector('#character-class');
+const characterSexSelect = document.querySelector('#character-sex');
 const cancelCharacterCreationButton = document.querySelector('#cancel-character-creation-button');
 const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
 const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
-const characterNoteBox = document.querySelector('#character-note-box');
-const characterNameSexNoteTitle = document.querySelector('#character-name-sex-note-title');
-const characterNameSexNoteText = document.querySelector('#character-name-sex-note-text');
+const characterOverviewContainer = document.querySelector('#character-overview');
 
 const alertBox = document.querySelector('#main-alert-box');
 const alertBoxTitle = alertBox.querySelector('.title');
@@ -47,11 +47,32 @@ function updateUIVisibility() {
     if (isCharFormVisible) {
         characterCreationTipsSidebar.style.display = isTipsSidebarVisible ? 'block' : 'none';
         showTipsButton.style.display = isTipsSidebarVisible ? 'none' : 'block';
+        characterOverviewContainer.style.display = 'flex';
     } else {
         characterCreationTipsSidebar.style.display = 'none';
         showTipsButton.style.display = 'none';
+        characterOverviewContainer.style.display = 'none';
     }
 };
+
+// UPDATE CHARACTER OVERVIEW FUNCTION
+
+function updateCharacterOverview() {
+    // if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+    //     characterOverviewContainer.style.display = 'none';
+    // } else {
+    //     characterOverviewContainer.style.display = 'flex';
+    // };
+
+    // Clear previous overview contents before updating
+    characterOverviewContainer.innerHTML = '';
+
+    // Update with new overview contents
+    characterOverviewContainer.innerHTML = `<p class="title">Name: </p></br><p class="column-container-text">${(characterNameInput.value == '') ? characterNameInput.placeholder : characterNameInput.value}</p></br>`;
+    characterOverviewContainer.innerHTML += `<p class="title">Race: </p></br><p class="column-container-text">${characterRaceSelect.value}</p></br>`;
+    characterOverviewContainer.innerHTML += `<p class="title">Class: </p></br><p class="column-container-text">${characterClassSelect.value}</p></br>`;
+    characterOverviewContainer.innerHTML += `<p class="title">Sex: </p></br><p class="column-container-text">${characterSexSelect.value}</p></br>`;
+}
 
 // CHARACTER OBJECT TEMPLATE
 
@@ -121,6 +142,53 @@ class Character {
     }
 }
 
+// Race Objects
+
+const races = {
+    "Human": {
+        abilityScoreModifiers: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 },
+        speed: 30,
+        size: "Medium",
+        languages: ["Common", "one extra"],
+        traits: [
+            "Extra Language",
+            "Versatile (extra skill proficiency option)"
+        ],
+        description: "Versatile and adaptable...",
+        subRace: null
+    }
+}
+
+const classes = {
+    "Fighter": {
+        hitDie: "d10",
+        primaryAbilities: ["Strength", "Dexterity"],
+        savingThrowProficiencies: ["Strength", "Constitution"],
+        armorProficiencies: ["All armor", "Shields"],
+        weaponProficiencies: ["Simple weapons", "Martial weapons"],
+        skillChoices: {
+            choose: 2,
+            from: ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"]
+        },
+        startingEquipment: [
+            // Equipment options...
+        ],
+        classFeatures: [
+            {
+                name: "Fighting Style",
+                level: 1,
+                description: "Choose a fighting style..."
+            },
+            {
+                name: "Second Wind",
+                level: 1,
+                description: "Regain hit points as a bonus action..."
+            }
+        ],
+        spellcasting: null
+    }
+}
+
 // ============== EVENT LISTENERS ==============
 
 window.addEventListener('resize', function () {
@@ -138,6 +206,7 @@ createCharacterButton.addEventListener('click', () => {
     appState.isTipsSidebarVisible = false;
     // appState.isTipsSidebarVisible = (appState.screenWidth > DESKTOP_BREAKPOINT);
     updateUIVisibility();
+    updateCharacterOverview();
     createCharacterButton.disabled = true;
 
     console.log('Create character form displayed');
@@ -177,10 +246,11 @@ nextOneButton.addEventListener('click', () => {
     console.log('Next button pressed');
 
     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-        
+
         alertBox.style.display = 'flex';
         alertBoxTitle.innerText = 'No race selected';
         alertBoxDescription.innerText = 'Please select a race in order to proceed to the next steps.';
+        characterRaceSelect.focus();
 
         console.log('No race selected - alert displayed');
     } else {
@@ -195,11 +265,7 @@ characterResetButton.addEventListener('click', () => {
     characterNameInput.value = '';
     characterRaceSelect.value = 'Select a race';
 
-    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-        characterNoteBox.style.display = 'none';
-    } else {
-        characterNoteBox.style.display = 'flex';
-    };
+    updateCharacterOverview();
 
     console.log('Character reset complete');
 });
@@ -221,58 +287,38 @@ cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Character reset, fields cleared and form hidden');
 });
 
-// Notebox Events
+// Character Overview Element Event Listeners
+characterNameInput.addEventListener('keyup', () => {
+    console.log('Character name input changing...');
+
+    updateCharacterOverview();
+
+    console.log('Character name input updated to ' + characterNameInput.value);
+})
+
 characterRaceSelect.addEventListener('change', () => {
-    const selectedRace = characterRaceSelect.value;
+    console.log('Character race selection changed');
 
-    if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-        characterNoteBox.style.display = 'none';
-    } else {
-        characterNoteBox.style.display = 'flex';
-    };
+    updateCharacterOverview();
 
-    switch (selectedRace) {
-        case 'Dwarf':
-            characterNameSexNoteTitle.innerText = "Common Dwarf Names";
-            characterNameSexNoteText.innerText = "Adrik, Alberich, Baern, Barendd, Brottor, Bruenor, Oain, Oarrak, Oelg, Eberk, Einkil, Fargrim, Flint, Gardain, Harbek, Kildrak, Morgran, Orsik, Oskar, Rangrim, Rurik, Taklinn, Thoradin, Thorin, Tordek, Traubon, Travok, Ulfgar, Veit, Vonda";
-            break;
-        case 'Elf':
-            characterNameSexNoteTitle.innerText = "Common Elf Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Halfling':
-            characterNameSexNoteTitle.innerText = "Common Halfling Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Human':
-            characterNameSexNoteTitle.innerText = "Common Human Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Dragonborn':
-            characterNameSexNoteTitle.innerText = "Common Dragonborn Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Gnome':
-            characterNameSexNoteTitle.innerText = "Common Gnome Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Half-Elf':
-            characterNameSexNoteTitle.innerText = "Common Half-Elf Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Half-Orc':
-            characterNameSexNoteTitle.innerText = "Common Half-Orc Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        case 'Tiefling':
-            characterNameSexNoteTitle.innerText = "Common Tiefling Names";
-            characterNameSexNoteText.innerText = "Some names here...";
-            break;
-        default:
-            characterNoteBox.style.display = "none";
-            break;
-    };
+    console.log('Character race set to ' + characterRaceSelect.value);
 });
+
+characterClassSelect.addEventListener('change', () => {
+    console.log('Character class selection changed');
+
+    updateCharacterOverview();
+
+    console.log('Character class set to ' + characterClassSelect.value);
+});
+
+characterSexSelect.addEventListener('change', () => {
+    console.log('Character sex selection changed');
+
+    updateCharacterOverview();
+
+    console.log('Character sex set to: ' + characterSexSelect.value);
+})
 
 // Alert Box Events
 closeAlertBoxButton.addEventListener('click', () => {
