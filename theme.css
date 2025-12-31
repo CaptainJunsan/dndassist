@@ -57,6 +57,7 @@ body {
     flex-direction: row;
     gap: 15px;
     flex-grow: 1;
+    overflow-x: scroll;
 }
 
 .app-title-description {
@@ -379,7 +380,7 @@ textarea {
    ============================================ */
 @media screen and (max-width: 1000px) {
     #show-tips-button {
-        display: block;
+        display: none;
     }
 
     .sidebar {
