@@ -341,14 +341,14 @@ testRollButton.addEventListener('click', () => {
                 <button type="button" class="icon-button" id="dice-d20-button" title="Select d20"><img src="d20_button.svg" alt="d20"></button>
             </div>
         </label>
+        <div class="full center-content" id="roll-results-container">
+            <div id='per-dice-roll-output'></div>
+            <p id='test-result-output'></p>
+        </div>
         <br><br>
         <div class="button-row">
             <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
             <button type='button' class='button' id='test-roll-button'><img src='uiButtonIcon_white.svg'>Roll Dice</button>
-        </div>
-        <div class="full center-content" id="roll-results-container">
-            <div id='per-dice-roll-output'></div>
-            <p id='test-result-output'></p>
         </div>`
         ;
 
@@ -458,16 +458,28 @@ testRollButton.addEventListener('click', () => {
             if (testDifficulty.value == 0) {
                 testResultOutput.style.backgroundColor = '';
             } else if (testResult < testDifficulty.value) {
-                testResultOutput.style.backgroundColor = 'red';
+                testResultOutput.style.backgroundColor = '#ff0033';
             } else {
-                testResultOutput.style.backgroundColor = 'green';
+                testResultOutput.style.backgroundColor = '#00cc44';
             }
         }
 
-        if (testResultOutput.innerHTML == testDiceType.value) {
+        if (testDiceCount.value == 1 && testResultOutput.innerHTML == testDiceType.value) {
             console.log('Natural ' + testResultOutput.innerHTML + '!');
 
-            testResultOutput.style.backgroundColor = 'blue';
+            testResultOutput.style.backgroundColor = '#4000ff';
+        } else if (testDiceCount.value == 1 && testResultOutput.innerHTML == '1') {
+            console.log('Natural 1 rolled.');
+
+            testResultOutput.style.backgroundColor = '#ff0033';
+        } else if (testResultOutput.innerHTML == (testDiceCount.value * testDiceType.value)) {
+            console.log('Maximum possible roll achieved!');
+
+            testResultOutput.style.backgroundColor = '#4000ff';
+        } else if (testResultOutput.innerHTML == testDiceCount.value) {
+            console.log('Minimum possible roll achieved.');
+
+            testResultOutput.style.backgroundColor = '#ff0033';
         }
 
         console.log('Test roll completed');
@@ -583,13 +595,20 @@ function rollDice(count, sides, dc, desc) {
             perDiceRollOutput.style.display = 'none';
         } else {
             perDiceRollOutput.style.display = 'flex';
-            perDiceRollOutput.innerHTML += `<span class="per-dice-roll">${roll}</span>`;
+            if (roll == sides) {
+                perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: blue; color: white;">${roll}</span>`;
+            } else if (roll == 1) {
+                perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: red; color: white;">${roll}</span>`;
+            } else {
+                perDiceRollOutput.innerHTML += `<span class="per-dice-roll">${roll}</span>`;
+            }
         }
 
         console.log(`Rolled a d${sides}: ${roll}`);
         total += roll;
     }
 
+    // Check for success or failure against DC and return message
     if (dc == 0) {
         console.log('Roll total: ' + total);
         if (desc == false) {

@@ -487,7 +487,8 @@ textarea {
     border-radius: 4px;
     height: 34px;
     width: 34px;
-    padding: 6px auto;
+    padding-bottom: 2px;
+    cursor: pointer;
 }
 
 .alert-box #test-result-output {
