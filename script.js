@@ -4,6 +4,7 @@ const createCharacterButton = document.querySelector('#create-character-button')
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
 const showTipsButton = document.querySelector('#show-tips-button');
+const testRollButton = document.querySelector('#test-roll');
 const nextOneButton = document.querySelector('#next-one');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
@@ -62,11 +63,11 @@ function updateCharacterOverview() {
     const race = characterRaceSelect.value;
     const charClass = characterClassSelect.value;
     const sex = characterSexSelect.value;
-    
+
     // Get race data (if available)
     const raceData = races[race] || null;
     const classData = classes[charClass] || null;
-    
+
     characterOverviewContainer.innerHTML = `
         <div class="overview-section">
             <h3 class="overview-title">Character Overview</h3>
@@ -246,7 +247,7 @@ window.addEventListener('resize', function () {
     // Get the new window width
     appState.screenWidth = window.innerWidth;
     updateUIVisibility();
-    console.log('Window resized to: ' + appState.screenWidth + 'px');
+    // console.log('Window resized to: ' + appState.screenWidth + 'px');
 });
 
 // Create Character Button Events
@@ -291,6 +292,96 @@ showTipsButton.addEventListener('click', () => {
 
     console.log('Tips sidebar shown');
 })
+
+// Test Roll Button Events
+testRollButton.addEventListener('click', () => {
+    console.log('Test roll button pressed');
+
+    alertBox.style.display = 'flex';
+    alertBoxTitle.innerText = 'Roll some dice!';
+    alertBoxDescription.innerText = 'Select the number of dice, type of dice, and difficulty class (DC) to beat.';
+
+    alertBoxDescription.innerHTML += `
+        <br><br>
+        <label for='test-dice-count'>Number of Dice
+            <input type='number' id='test-dice-count' min='1' max='10' value='1'>
+        </label>
+        <br>
+        <label for='test-dice-type'>Type of Dice
+            <select name='test-dice-type' id='test-dice-type'>
+                <option disabled selected value='Select a dice'>Select a dice</option>
+                <option value='4'>d4</option>
+                <option value='6'>d6</option>
+                <option value='8'>d8</option>
+                <option value='10'>d10</option>
+                <option value='12'>d12</option>
+                <option value='20'>d20</option>
+            </select>
+        </label>
+        <br>
+        <label for='test-difficulty'>Difficulty Class (DC)
+            <select name='test-difficulty' id='test-difficulty'>
+                <option disabled selected value='Select a DC'>Select a DC</option>
+                <option value='5'>5 - Dead Easy</option>
+                <option value='10'>10 - Easy</option>
+                <option value='15'>15 - Moderate</option>
+                <option value='20'>20 - Difficult</option>
+                <option value='25'>25 - Extremely Difficult</option>
+                <option value='30'>30 - Nearly Impossible</option>
+            </select>
+        </label>
+        <br><br>
+        <div class="button-row">
+            <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
+            <button type='button' class='button' id='test-roll-button'>Roll Dice</button>
+        </div>
+        <p id='test-result-output'></p>`
+    ;
+
+    let testDiceCount = document.querySelector('#test-dice-count');
+    let testDiceType = document.querySelector('#test-dice-type');
+    let testDifficulty = document.querySelector('#test-difficulty');
+    let resetTestButton = document.querySelector('#reset-test-roll-button');
+    let testRollButton = document.querySelector('#test-roll-button');
+    let testResultOutput = document.querySelector('#test-result-output');
+
+    resetTestButton.addEventListener('click', () => {
+        console.log('Reset test roll button pressed');
+
+        testDiceCount.value = '1';
+        testDiceType.value = 'Select a dice';
+        testDifficulty.value = 'Select a DC';
+        testResultOutput.innerHTML = '';
+
+        console.log('Test roll inputs reset');
+    });
+
+    testRollButton.addEventListener('click', () => {
+        console.log('Test roll dice button pressed');
+
+        if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
+            testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
+            testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
+        } else {
+            testResultOutput.style.fontSize = ''; // Reset to default;
+            let testResult = rollDice(
+                parseInt(testDiceCount.value),
+                parseInt(testDiceType.value),
+                parseInt(testDifficulty.value),
+                false
+            );
+            testResultOutput.innerHTML = testResult
+            if (testResult < testDifficulty.value) {
+                testResultOutput.style.color = 'red';
+            } else {
+                testResultOutput.style.color = 'green';
+            }
+        }
+
+        console.log('Test roll completed');
+    });
+
+});
 
 // Next Buttons Events
 nextOneButton.addEventListener('click', () => {
@@ -384,3 +475,35 @@ closeAlertBoxButton.addEventListener('click', () => {
 
 // --- END EVENT LISTENERS ---
 // ---------------------------
+
+// CUSTOM DICE ROLL FUNCTION
+
+function rollDice(count, sides, dc, desc) {
+    let total = 0;
+    let rolls = [];
+
+    for (let i = 0; i < count; i++) {
+        const roll = Math.floor(Math.random() * sides) + 1;
+        rolls.push(roll);
+        console.log(`Rolled a d${sides}: ${roll}`);
+        total += roll;
+    }
+
+    if (total < dc) {
+        console.log(`Roll failed: ${total} (needed ${dc} or higher)`);
+        if (desc == false) {
+            return total;
+        } else {
+            return "Roll failed with " + total;
+        }
+    } else {
+        console.log(`Roll succeeded: ${total} (needed ${dc} or higher)`);
+        if (desc == false) {
+            return total;
+        } else {
+            return "Roll succeeded with " + total;
+        }
+    }
+}
+
+// console.log(`Test roll: 2d20 with DC of 15. Result: ${rollDice(2, 20, 15)}`);
