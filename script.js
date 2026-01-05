@@ -16,6 +16,8 @@ const characterCreationTipsSidebar = document.querySelector('#character-creation
 const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
 const characterOverviewContainer = document.querySelector('#character-overview');
 
+let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+
 const alertBox = document.querySelector('#main-alert-box');
 const alertBoxTitle = alertBox.querySelector('.title');
 const alertBoxDescription = alertBox.querySelector('.description');
@@ -343,6 +345,7 @@ testRollButton.addEventListener('click', () => {
             <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
             <button type='button' class='button' id='test-roll-button'><img src='uiButtonIcon_white.svg'>Roll Dice</button>
         </div>
+        <p id='per-dice-roll-output'></p>
         <p id='test-result-output'></p>`
         ;
 
@@ -359,6 +362,15 @@ testRollButton.addEventListener('click', () => {
     let testRollButton = document.querySelector('#test-roll-button');
     let testResultOutput = document.querySelector('#test-result-output');
 
+    function clearSelectedDice() {
+        d4Button.classList.remove('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.remove('selected');
+    };
+
     resetTestButton.addEventListener('click', () => {
         console.log('Reset test roll button pressed');
 
@@ -371,65 +383,43 @@ testRollButton.addEventListener('click', () => {
         testResultOutput.style.fontSize = ''; // Reset to default
         testResultOutput.style.marginTop = ''; // Reset to default
 
+        clearSelectedDice();
+
         console.log('Test roll inputs reset');
     });
 
     d4Button.addEventListener('click', () => {
+        clearSelectedDice();
         d4Button.classList.add('selected');
-        d6Button.classList.remove('selected');
-        d8Button.classList.remove('selected');
-        d10Button.classList.remove('selected');
-        d12Button.classList.remove('selected');
-        d20Button.classList.remove('selected');
         testDiceType.value = '4';
     })
 
     d6Button.addEventListener('click', () => {
-        d4Button.classList.remove('selected');
+        clearSelectedDice();
         d6Button.classList.add('selected');
-        d8Button.classList.remove('selected');
-        d10Button.classList.remove('selected');
-        d12Button.classList.remove('selected');
-        d20Button.classList.remove('selected');
         testDiceType.value = '6';
     })
 
     d8Button.addEventListener('click', () => {
-        d4Button.classList.remove('selected');
-        d6Button.classList.remove('selected');
+        clearSelectedDice();
         d8Button.classList.add('selected');
-        d10Button.classList.remove('selected');
-        d12Button.classList.remove('selected');
-        d20Button.classList.remove('selected');
         testDiceType.value = '8';
     })
 
     d10Button.addEventListener('click', () => {
-        d4Button.classList.remove('selected');
-        d6Button.classList.remove('selected');
-        d8Button.classList.remove('selected');
+        clearSelectedDice();
         d10Button.classList.add('selected');
-        d12Button.classList.remove('selected');
-        d20Button.classList.remove('selected');
         testDiceType.value = '10';
     })
 
     d12Button.addEventListener('click', () => {
-        d4Button.classList.remove('selected');
-        d6Button.classList.remove('selected');
-        d8Button.classList.remove('selected');
-        d10Button.classList.remove('selected');
+        clearSelectedDice();
         d12Button.classList.add('selected');
-        d20Button.classList.remove('selected');
         testDiceType.value = '12';
     })
 
     d20Button.addEventListener('click', () => {
-        d4Button.classList.remove('selected');
-        d6Button.classList.remove('selected');
-        d8Button.classList.remove('selected');
-        d10Button.classList.remove('selected');
-        d12Button.classList.remove('selected');
+        clearSelectedDice();
         d20Button.classList.add('selected');
         testDiceType.value = '20';
     })
@@ -575,6 +565,7 @@ function rollDice(count, sides, dc, desc) {
     for (let i = 0; i < count; i++) {
         const roll = Math.floor(Math.random() * sides) + 1;
         rolls.push(roll);
+        perDiceRollOutput.innerHTML += roll + ' ';
         console.log(`Rolled a d${sides}: ${roll}`);
         total += roll;
     }
