@@ -321,7 +321,7 @@ testRollButton.addEventListener('click', () => {
         <br>
         <label for='test-difficulty'>Difficulty Class (DC)
             <select name='test-difficulty' id='test-difficulty'>
-                <option disabled selected value='Select a DC'>Select a DC</option>
+                <option selected value='0'>None</option>
                 <option value='5'>5 - Dead Easy</option>
                 <option value='10'>10 - Easy</option>
                 <option value='15'>15 - Moderate</option>
@@ -350,7 +350,7 @@ testRollButton.addEventListener('click', () => {
 
         testDiceCount.value = '1';
         testDiceType.value = 'Select a dice';
-        testDifficulty.value = 'Select a DC';
+        testDifficulty.value = '0';
         testResultOutput.innerHTML = '';
 
         testResultOutput.style.color = ''; // Reset to default
@@ -368,6 +368,7 @@ testRollButton.addEventListener('click', () => {
             testResultOutput.style.marginTop = '25px'; // Add spacing above temorarily
             testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
         } else {
+            
             testResultOutput.style.fontSize = ''; // Reset to default;
             testResultOutput.style.marginTop = '20px'; // Reset to default;
             let testResult = rollDice(
@@ -376,12 +377,21 @@ testRollButton.addEventListener('click', () => {
                 parseInt(testDifficulty.value),
                 false
             );
-            testResultOutput.innerHTML = testResult
-            if (testResult < testDifficulty.value) {
+            testResultOutput.innerHTML = testResult;
+
+            if (testDifficulty.value == 0) {
+                testResultOutput.style.color = '';
+            } else if (testResult < testDifficulty.value) {
                 testResultOutput.style.color = 'red';
             } else {
                 testResultOutput.style.color = 'green';
             }
+        }
+
+        if (testResultOutput.innerHTML == testDiceType.value) {
+            console.log('Natural ' + testResultOutput.innerHTML + '!');
+
+            testResultOutput.style.color = 'blue';
         }
 
         console.log('Test roll completed');
@@ -502,12 +512,19 @@ function rollDice(count, sides, dc, desc) {
         } else {
             return "Roll failed with " + total;
         }
-    } else {
+    } else if (total >= dc) {
         console.log(`Roll succeeded: ${total} (needed ${dc} or higher)`);
         if (desc == false) {
             return total;
         } else {
             return "Roll succeeded with " + total;
+        }
+    } else if (dc == 0) {
+        console.log('Roll total: ' + total);
+        if (desc == false) {
+            return total;
+        } else {
+            return 'Roll total: ' + total + ' (no DC)';
         }
     }
 }
