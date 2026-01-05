@@ -364,11 +364,11 @@ testRollButton.addEventListener('click', () => {
 
         if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
-            testResultOutput.style.marginTop = '30px'; // Add spacing above temorarily
+            testResultOutput.style.marginTop = '25px'; // Add spacing above temorarily
             testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
         } else {
             testResultOutput.style.fontSize = ''; // Reset to default;
-            testResultOutput.style.marginTop = '10px'; // Reset to default;
+            testResultOutput.style.marginTop = '20px'; // Reset to default;
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
                 parseInt(testDiceType.value),
