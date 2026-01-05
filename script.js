@@ -352,7 +352,7 @@ testRollButton.addEventListener('click', () => {
         testDiceType.value = 'Select a dice';
         testDifficulty.value = 'Select a DC';
         testResultOutput.innerHTML = '';
-        
+
         testResultOutput.style.fontSize = ''; // Reset to default;
         testResultOutput.style.marginTop = ''; // Reset to default;
 
@@ -368,7 +368,7 @@ testRollButton.addEventListener('click', () => {
             testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
         } else {
             testResultOutput.style.fontSize = ''; // Reset to default;
-            testResultOutput.style.marginTop = ''; // Reset to default;
+            testResultOutput.style.marginTop = '10px'; // Reset to default;
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
                 parseInt(testDiceType.value),
