@@ -333,10 +333,10 @@ testRollButton.addEventListener('click', () => {
         <br><br>
         <div class="button-row">
             <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
-            <button type='button' class='button' id='test-roll-button'>Roll Dice</button>
+            <button type='button' class='button' id='test-roll-button'><img src='uiButtonIcon_white.svg'>Roll Dice</button>
         </div>
         <p id='test-result-output'></p>`
-    ;
+        ;
 
     let testDiceCount = document.querySelector('#test-dice-count');
     let testDiceType = document.querySelector('#test-dice-type');
@@ -352,6 +352,9 @@ testRollButton.addEventListener('click', () => {
         testDiceType.value = 'Select a dice';
         testDifficulty.value = 'Select a DC';
         testResultOutput.innerHTML = '';
+        
+        testResultOutput.style.fontSize = ''; // Reset to default;
+        testResultOutput.style.marginTop = ''; // Reset to default;
 
         console.log('Test roll inputs reset');
     });
@@ -361,9 +364,11 @@ testRollButton.addEventListener('click', () => {
 
         if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
+            testResultOutput.style.marginTop = '30px'; // Add spacing above temorarily
             testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
         } else {
             testResultOutput.style.fontSize = ''; // Reset to default;
+            testResultOutput.style.marginTop = ''; // Reset to default;
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
                 parseInt(testDiceType.value),
