@@ -438,10 +438,15 @@ testRollButton.addEventListener('click', () => {
 
         if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
+            testResultOutput.style.backgroundColor = 'none'; // Make black text legible
+            testResultOutput.style.color = '#000000'; // Change text color to black
+            testResultOutput.style.width = '100%'; // Expand width to fit text
             testResultOutput.innerHTML = 'Please select a dice type to roll.';
         } else {
-
-            testResultOutput.style.fontSize = ''; // Reset to default;
+            testResultOutput.style.backgroundColor = ''; // Reset to default
+            testResultOutput.style.color = ''; // Reset to default
+            testResultOutput.style.width = '1'; // Reset to default
+            testResultOutput.style.fontSize = ''; // Reset to default
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
                 parseInt(testDiceType.value),
