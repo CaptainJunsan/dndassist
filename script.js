@@ -362,6 +362,7 @@ testRollButton.addEventListener('click', () => {
     let d12Button = document.querySelector('#dice-d12-button');
     let d20Button = document.querySelector('#dice-d20-button');
     let testDifficulty = document.querySelector('#test-difficulty');
+    let cancelTestButton = document.querySelector('#cancel-test-roll-button');
     let resetTestButton = document.querySelector('#reset-test-roll-button');
     let testRollButton = document.querySelector('#test-roll-button');
     let rollResultsContainer = document.querySelector('#roll-results-container');
@@ -377,6 +378,14 @@ testRollButton.addEventListener('click', () => {
         d20Button.classList.remove('selected');
         testDiceType.value = 'Select a dice';
     };
+    
+    cancelTestButton.addEventListener('click', () => {
+        console.log('Cancel test roll button pressed');
+        
+        alertBox.style.display = 'none';
+        
+        console.log('Alert box successfully hidden');
+    }
 
     resetTestButton.addEventListener('click', () => {
         console.log('Reset test roll button pressed');
