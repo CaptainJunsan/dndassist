@@ -353,8 +353,9 @@ testRollButton.addEventListener('click', () => {
         testDifficulty.value = 'Select a DC';
         testResultOutput.innerHTML = '';
 
-        testResultOutput.style.fontSize = ''; // Reset to default;
-        testResultOutput.style.marginTop = ''; // Reset to default;
+        testResultOutput.style.color = ''; // Reset to default
+        testResultOutput.style.fontSize = ''; // Reset to default
+        testResultOutput.style.marginTop = ''; // Reset to default
 
         console.log('Test roll inputs reset');
     });
