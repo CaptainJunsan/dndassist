@@ -438,7 +438,7 @@ testRollButton.addEventListener('click', () => {
 
         if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
-            testResultOutput.style.backgroundColor = 'none'; // Make black text legible
+            testResultOutput.style.background = 'none'; // Make black text legible
             testResultOutput.style.color = '#000000'; // Change text color to black
             testResultOutput.style.width = '100%'; // Expand width to fit text
             testResultOutput.innerHTML = 'Please select a dice type to roll.';
