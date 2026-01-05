@@ -74,8 +74,10 @@ body {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
     font-size: 16px;
+    text-wrap: nowrap;
     padding: 8px 9px 10px 9px;
     width: fit-content;
+    min-width: 100px;
     border-radius: 4px;
     border: none;
     background-color: black;
@@ -132,6 +134,7 @@ body {
     display: flex;
     gap: 12px;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 /* ============================================
