@@ -305,9 +305,22 @@ testRollButton.addEventListener('click', () => {
 
     alertBoxDescription.innerHTML += `
         <br><br>
-        <label for='test-dice-count'>Number of Dice
-            <input type='number' id='test-dice-count' min='1' max='10' value='1'>
-        </label>
+        <div class="form-row">
+            <label for='test-dice-count'>Number of Dice
+                <input type='number' id='test-dice-count' min='1' max='10' value='1'>
+            </label>
+            <label for='test-difficulty'>Difficulty Class (DC)
+                <select name='test-difficulty' id='test-difficulty'>
+                    <option selected value='0'>None</option>
+                    <option value='5'>5 - Dead Easy</option>
+                    <option value='10'>10 - Easy</option>
+                    <option value='15'>15 - Moderate</option>
+                    <option value='20'>20 - Difficult</option>
+                    <option value='25'>25 - Extremely Difficult</option>
+                    <option value='30'>30 - Nearly Impossible</option>
+                </select>
+            </label>
+        </div>
         <br>
         <label for='test-dice-type'>Type of Dice
             <select name='test-dice-type' id='test-dice-type'>
@@ -328,25 +341,15 @@ testRollButton.addEventListener('click', () => {
                 <button type="button" class="icon-button" id="dice-d20-button" title="Select d20"><img src="d20_button.svg" alt="d20"></button>
             </div>
         </label>
-        <br>
-        <label for='test-difficulty'>Difficulty Class (DC)
-            <select name='test-difficulty' id='test-difficulty'>
-                <option selected value='0'>None</option>
-                <option value='5'>5 - Dead Easy</option>
-                <option value='10'>10 - Easy</option>
-                <option value='15'>15 - Moderate</option>
-                <option value='20'>20 - Difficult</option>
-                <option value='25'>25 - Extremely Difficult</option>
-                <option value='30'>30 - Nearly Impossible</option>
-            </select>
-        </label>
         <br><br>
         <div class="button-row">
             <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
             <button type='button' class='button' id='test-roll-button'><img src='uiButtonIcon_white.svg'>Roll Dice</button>
         </div>
-        <p id='per-dice-roll-output'></p>
-        <p id='test-result-output'></p>`
+        <div class="full center-content" id="roll-results-container">
+            <div id='per-dice-roll-output'></div>
+            <p id='test-result-output'></p>
+        </div>`
         ;
 
     let testDiceCount = document.querySelector('#test-dice-count');
@@ -360,6 +363,8 @@ testRollButton.addEventListener('click', () => {
     let testDifficulty = document.querySelector('#test-difficulty');
     let resetTestButton = document.querySelector('#reset-test-roll-button');
     let testRollButton = document.querySelector('#test-roll-button');
+    let rollResultsContainer = document.querySelector('#roll-results-container');
+    let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     let testResultOutput = document.querySelector('#test-result-output');
 
     function clearSelectedDice() {
@@ -369,19 +374,20 @@ testRollButton.addEventListener('click', () => {
         d10Button.classList.remove('selected');
         d12Button.classList.remove('selected');
         d20Button.classList.remove('selected');
+        testDiceType.value = 'Select a dice';
     };
 
     resetTestButton.addEventListener('click', () => {
         console.log('Reset test roll button pressed');
 
         testDiceCount.value = '1';
-        testDiceType.value = 'Select a dice';
         testDifficulty.value = '0';
         testResultOutput.innerHTML = '';
 
-        testResultOutput.style.color = ''; // Reset to default
+        testResultOutput.style.backgroundColor = ''; // Reset to default
         testResultOutput.style.fontSize = ''; // Reset to default
-        testResultOutput.style.marginTop = ''; // Reset to default
+        rollResultsContainer.style.display = 'none';
+        perDiceRollOutput.innerHTML = '';
 
         clearSelectedDice();
 
@@ -427,14 +433,15 @@ testRollButton.addEventListener('click', () => {
     testRollButton.addEventListener('click', () => {
         console.log('Test roll dice button pressed');
 
+        rollResultsContainer.style.display = 'flex';
+        perDiceRollOutput.innerHTML = ''; // Clear previous dice roll values
+
         if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
-            testResultOutput.style.marginTop = '25px'; // Add spacing above temorarily
-            testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
+            testResultOutput.innerHTML = 'Please select a dice type to roll.';
         } else {
 
             testResultOutput.style.fontSize = ''; // Reset to default;
-            testResultOutput.style.marginTop = '20px'; // Reset to default;
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
                 parseInt(testDiceType.value),
@@ -444,18 +451,18 @@ testRollButton.addEventListener('click', () => {
             testResultOutput.innerHTML = testResult;
 
             if (testDifficulty.value == 0) {
-                testResultOutput.style.color = '';
+                testResultOutput.style.backgroundColor = '';
             } else if (testResult < testDifficulty.value) {
-                testResultOutput.style.color = 'red';
+                testResultOutput.style.backgroundColor = 'red';
             } else {
-                testResultOutput.style.color = 'green';
+                testResultOutput.style.backgroundColor = 'green';
             }
         }
 
         if (testResultOutput.innerHTML == testDiceType.value) {
             console.log('Natural ' + testResultOutput.innerHTML + '!');
 
-            testResultOutput.style.color = 'blue';
+            testResultOutput.style.backgroundColor = 'blue';
         }
 
         console.log('Test roll completed');
@@ -559,13 +566,21 @@ closeAlertBoxButton.addEventListener('click', () => {
 // CUSTOM DICE ROLL FUNCTION
 
 function rollDice(count, sides, dc, desc) {
+    let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     let total = 0;
     let rolls = [];
 
     for (let i = 0; i < count; i++) {
         const roll = Math.floor(Math.random() * sides) + 1;
         rolls.push(roll);
-        perDiceRollOutput.innerHTML += roll + ' ';
+
+        if (count == '1' || count == 1) {
+            perDiceRollOutput.style.display = 'none';
+        } else {
+            perDiceRollOutput.style.display = 'flex';
+            perDiceRollOutput.innerHTML += `<span class="per-dice-roll">${roll}</span>`;
+        }
+
         console.log(`Rolled a d${sides}: ${roll}`);
         total += roll;
     }
