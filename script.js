@@ -317,6 +317,14 @@ testRollButton.addEventListener('click', () => {
                 <option value='12'>d12</option>
                 <option value='20'>d20</option>
             </select>
+            <div id="dice-icon-buttons-container" class="button-row-left">
+                <button type="button" class="icon-button" id="dice-d4-button" title="Select d4"><img src="d4_button.svg" alt="d4"></button>
+                <button type="button" class="icon-button" id="dice-d6-button" title="Select d6"><img src="d6_button.svg" alt="d6"></button>
+                <button type="button" class="icon-button" id="dice-d8-button" title="Select d8"><img src="d8_button.svg" alt="d8"></button>
+                <button type="button" class="icon-button" id="dice-d10-button" title="Select d10"><img src="d10_button.svg" alt="d10"></button>
+                <button type="button" class="icon-button" id="dice-d12-button" title="Select d12"><img src="d12_button.svg" alt="d12"></button>
+                <button type="button" class="icon-button" id="dice-d20-button" title="Select d20"><img src="d20_button.svg" alt="d20"></button>
+            </div>
         </label>
         <br>
         <label for='test-difficulty'>Difficulty Class (DC)
@@ -340,6 +348,12 @@ testRollButton.addEventListener('click', () => {
 
     let testDiceCount = document.querySelector('#test-dice-count');
     let testDiceType = document.querySelector('#test-dice-type');
+    let d4Button = document.querySelector('#dice-d4-button');
+    let d6Button = document.querySelector('#dice-d6-button');
+    let d8Button = document.querySelector('#dice-d8-button');
+    let d10Button = document.querySelector('#dice-d10-button');
+    let d12Button = document.querySelector('#dice-d12-button');
+    let d20Button = document.querySelector('#dice-d20-button');
     let testDifficulty = document.querySelector('#test-difficulty');
     let resetTestButton = document.querySelector('#reset-test-roll-button');
     let testRollButton = document.querySelector('#test-roll-button');
@@ -360,6 +374,66 @@ testRollButton.addEventListener('click', () => {
         console.log('Test roll inputs reset');
     });
 
+    d4Button.addEventListener('click', () => {
+        d4Button.classList.add('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.remove('selected');
+        testDiceType.value = '4';
+    })
+
+    d6Button.addEventListener('click', () => {
+        d4Button.classList.remove('selected');
+        d6Button.classList.add('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.remove('selected');
+        testDiceType.value = '6';
+    })
+
+    d8Button.addEventListener('click', () => {
+        d4Button.classList.remove('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.add('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.remove('selected');
+        testDiceType.value = '8';
+    })
+
+    d10Button.addEventListener('click', () => {
+        d4Button.classList.remove('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.add('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.remove('selected');
+        testDiceType.value = '10';
+    })
+
+    d12Button.addEventListener('click', () => {
+        d4Button.classList.remove('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.add('selected');
+        d20Button.classList.remove('selected');
+        testDiceType.value = '12';
+    })
+
+    d20Button.addEventListener('click', () => {
+        d4Button.classList.remove('selected');
+        d6Button.classList.remove('selected');
+        d8Button.classList.remove('selected');
+        d10Button.classList.remove('selected');
+        d12Button.classList.remove('selected');
+        d20Button.classList.add('selected');
+        testDiceType.value = '20';
+    })
+
     testRollButton.addEventListener('click', () => {
         console.log('Test roll dice button pressed');
 
@@ -368,7 +442,7 @@ testRollButton.addEventListener('click', () => {
             testResultOutput.style.marginTop = '25px'; // Add spacing above temorarily
             testResultOutput.innerHTML = 'Please select both a dice type and a difficulty class (DC) to roll.';
         } else {
-            
+
             testResultOutput.style.fontSize = ''; // Reset to default;
             testResultOutput.style.marginTop = '20px'; // Reset to default;
             let testResult = rollDice(
@@ -505,7 +579,14 @@ function rollDice(count, sides, dc, desc) {
         total += roll;
     }
 
-    if (total < dc) {
+    if (dc == 0) {
+        console.log('Roll total: ' + total);
+        if (desc == false) {
+            return total;
+        } else {
+            return 'Roll total: ' + total + ' (no DC)';
+        }
+    } else if (total < dc) {
         console.log(`Roll failed: ${total} (needed ${dc} or higher)`);
         if (desc == false) {
             return total;
@@ -518,13 +599,6 @@ function rollDice(count, sides, dc, desc) {
             return total;
         } else {
             return "Roll succeeded with " + total;
-        }
-    } else if (dc == 0) {
-        console.log('Roll total: ' + total);
-        if (desc == false) {
-            return total;
-        } else {
-            return 'Roll total: ' + total + ' (no DC)';
         }
     }
 }

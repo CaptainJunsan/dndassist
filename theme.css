@@ -137,6 +137,22 @@ body {
     flex-wrap: wrap;
 }
 
+.icon-button {
+    background: none;
+    border: none;
+    border-radius: 99px;
+    padding: 0;
+    cursor: pointer;
+    height: 52px;
+    width: 52px;
+
+    transition: box-shadow 300ms ease;
+}
+
+.icon-button.selected {
+    box-shadow: 0 0 0 4px #000000;
+}
+
 /* ============================================
    FORM ELEMENTS
    ============================================ */
@@ -408,6 +424,13 @@ textarea {
     justify-content: flex-end;
 }
 
+.alert-box .button-row-left {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 15px 0;
+}
+
 .alert-box #test-result-output {
     width: 100%;
     text-align: center;
@@ -416,6 +439,10 @@ textarea {
     font-size: 32px;
     font-weight: 600;
     margin: 10px auto;
+}
+
+#test-dice-type {
+    display: none;
 }
 
 /* ============================================
