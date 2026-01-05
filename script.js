@@ -445,7 +445,7 @@ testRollButton.addEventListener('click', () => {
         } else {
             testResultOutput.style.backgroundColor = ''; // Reset to default
             testResultOutput.style.color = ''; // Reset to default
-            testResultOutput.style.width = '1'; // Reset to default
+            testResultOutput.style.width = ''; // Reset to default
             testResultOutput.style.fontSize = ''; // Reset to default
             let testResult = rollDice(
                 parseInt(testDiceCount.value),
