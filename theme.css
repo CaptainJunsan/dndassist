@@ -538,4 +538,8 @@ textarea {
     .alert-box {
         width: 95vw;
     }
+    
+    .alert-box .close-alert-box-button {
+        display: none;
+    }
 }
