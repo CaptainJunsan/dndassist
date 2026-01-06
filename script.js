@@ -378,12 +378,12 @@ testRollButton.addEventListener('click', () => {
         d20Button.classList.remove('selected');
         testDiceType.value = 'Select a dice';
     };
-    
+
     cancelTestButton.addEventListener('click', () => {
         console.log('Cancel test roll button pressed');
-        
+
         alertBox.style.display = 'none';
-        
+
         console.log('Alert box successfully hidden');
     });
 
@@ -631,7 +631,7 @@ function displayDiceRolls(result) {
             span.className = 'per-dice-roll';
             span.id = `dice-${spanRollID++}`;
             span.textContent = roll;
-            span.style.opacity = '1';
+            span.style.opacity = '1'; // Set opacity for variable testing later
 
             //Color code based on roll value
             if (roll === result.sides) {
@@ -650,9 +650,15 @@ function displayDiceRolls(result) {
 
             // Add event listener for each span element
             span.addEventListener('click', () => {
+                let testResultOutput = document.querySelector('#test-result-output');
+
                 span.style.opacity = span.style.opacity == '1' ? '0.3' : '1';
                 console.log('Clicked on dice showing ' + roll);
                 console.log('Span opacity set to ' + span.style.opacity);
+                result.total = span.style.opacity == '1' ? result.total += roll : result.total -= roll;
+                console.log(result.total);
+
+                testResultOutput.innerHTML = result.total;
             })
 
             // Add to container
@@ -677,7 +683,7 @@ function updateTotalColor(result) {
     // Check for perfect rolls first
     if (total === count * sides) {
         bgColor = '#4000ff'; // Perfect roll
-    } else if ( total === count) {
+    } else if (total === count) {
         bgColor = '#ff0033'; // Minimum roll
     } else if (dc > 0) {
         bgColor = total >= dc ? '#00cc44' : '#ff0033'; // Check against DC for success or fail
