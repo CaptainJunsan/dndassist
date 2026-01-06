@@ -210,6 +210,18 @@ const races = {
         ],
         description: "Versatile and adaptable...",
         subRace: null
+    },
+    "Dwarf": {
+        abilityScoreModifiers: { con: 2 },
+        speed: 25,
+        size: "Medium",
+        languages: ["Common", "Dwarvish"],
+        traits: [
+            "Extra Language",
+            "Versatile (extra skill proficiency option)"
+        ],
+        description: "Versatile and adaptable...",
+        subRace: ["Hill", "Mountain"]
     }
 }
 
