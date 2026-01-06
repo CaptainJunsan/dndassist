@@ -444,53 +444,28 @@ testRollButton.addEventListener('click', () => {
         console.log('Test roll dice button pressed');
 
         rollResultsContainer.style.display = 'flex';
-        perDiceRollOutput.innerHTML = ''; // Clear previous dice roll values
 
-        if (testDiceType.value == 'Select a dice' || testDifficulty.value == 'Select a DC') {
+        if (testDiceType.value == 'Select a dice') {
+            const testResultOutput = document.querySelector('#test-result-output');
             testResultOutput.style.fontSize = '14px'; // Prevent overflow of large font size
             testResultOutput.style.background = 'none'; // Make black text legible
             testResultOutput.style.color = '#000000'; // Change text color to black
-            testResultOutput.style.width = '100%'; // Expand width to fit text
             testResultOutput.innerHTML = 'Please select a dice type to roll.';
-        } else {
-            testResultOutput.style.backgroundColor = ''; // Reset to default
-            testResultOutput.style.color = ''; // Reset to default
-            testResultOutput.style.width = ''; // Reset to default
-            testResultOutput.style.fontSize = ''; // Reset to default
-            let testResult = rollDice(
-                parseInt(testDiceCount.value),
-                parseInt(testDiceType.value),
-                parseInt(testDifficulty.value),
-                false
-            );
-            testResultOutput.innerHTML = testResult;
 
-            if (testDifficulty.value == 0) {
-                testResultOutput.style.backgroundColor = '';
-            } else if (testResult < testDifficulty.value) {
-                testResultOutput.style.backgroundColor = '#ff0033';
-            } else {
-                testResultOutput.style.backgroundColor = '#00cc44';
-            }
+            const perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+            perDiceRollOutput.innerHTML = '';
+            return;
         }
 
-        if (testDiceCount.value == 1 && testResultOutput.innerHTML == testDiceType.value) {
-            console.log('Natural ' + testResultOutput.innerHTML + '!');
+        // Roll the dice
+        const result = rollDice(
+            parseInt(testDiceCount.value),
+            parseInt(testDiceType.value),
+            parseInt(testDifficulty.value)
+        );
 
-            testResultOutput.style.backgroundColor = '#4000ff';
-        } else if (testDiceCount.value == 1 && testResultOutput.innerHTML == '1') {
-            console.log('Natural 1 rolled.');
-
-            testResultOutput.style.backgroundColor = '#ff0033';
-        } else if (testResultOutput.innerHTML == (testDiceCount.value * testDiceType.value)) {
-            console.log('Maximum possible roll achieved!');
-
-            testResultOutput.style.backgroundColor = '#4000ff';
-        } else if (testResultOutput.innerHTML == testDiceCount.value) {
-            console.log('Minimum possible roll achieved.');
-
-            testResultOutput.style.backgroundColor = '#ff0033';
-        }
+        // Display results
+        displayDiceRolls(result);
 
         console.log('Test roll completed');
     });
@@ -592,55 +567,163 @@ closeAlertBoxButton.addEventListener('click', () => {
 
 // CUSTOM DICE ROLL FUNCTION
 
-function rollDice(count, sides, dc, desc) {
-    let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
-    let total = 0;
-    let rolls = [];
+function rollDice(count, sides, dc = 0) {
+    const rolls = []; // Store individual rolls
+    let total = 0; // Sum of all rolls
 
+    // Roll each die
     for (let i = 0; i < count; i++) {
         const roll = Math.floor(Math.random() * sides) + 1;
-        rolls.push(roll);
-
-        if (count == '1' || count == 1) {
-            perDiceRollOutput.style.display = 'none';
-        } else {
-            perDiceRollOutput.style.display = 'flex';
-            if (roll == sides) {
-                perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: blue; color: white;">${roll}</span>`;
-            } else if (roll == 1) {
-                perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: red; color: white;">${roll}</span>`;
-            } else {
-                perDiceRollOutput.innerHTML += `<span class="per-dice-roll">${roll}</span>`;
-            }
-        }
-
-        console.log(`Rolled a d${sides}: ${roll}`);
-        total += roll;
+        rolls.push(roll); // Save roll
+        total += roll; // Add to total
     }
 
-    // Check for success or failure against DC and return message
-    if (dc == 0) {
-        console.log('Roll total: ' + total);
-        if (desc == false) {
-            return total;
-        } else {
-            return 'Roll total: ' + total + ' (no DC)';
-        }
-    } else if (total < dc) {
-        console.log(`Roll failed: ${total} (needed ${dc} or higher)`);
-        if (desc == false) {
-            return total;
-        } else {
-            return "Roll failed with " + total;
-        }
-    } else if (total >= dc) {
-        console.log(`Roll succeeded: ${total} (needed ${dc} or higher)`);
-        if (desc == false) {
-            return total;
-        } else {
-            return "Roll succeeded with " + total;
-        }
+    // Calculate success/failure (if DC exists)
+    let status = 'none';
+    if (dc > 0) {
+        status = total >= dc ? 'success' : 'fail';
     }
+
+    // Check for special rolls (only on d20s)
+    const hasNatural20 = sides === 20 && rolls.includes(20);
+    const hasNatural1 = sides === 20 & rolls.includes(1);
+
+    // Return all the data
+    return {
+        rolls: rolls,
+        total: total,
+        dc: dc,
+        status: status,
+        sides: sides,
+        count: count,
+        hasNatural20: hasNatural20,
+        hasNatural1: hasNatural1
+    };
 }
+
+function displayDiceRolls(result) {
+    const perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+    const testResultOutput = document.querySelector('#test-result-output');
+
+    // Safety check
+    if (!perDiceRollOutput || !testResultOutput) {
+        console.error('Roll output elements not found!');
+        return;
+    }
+
+    // Clear previous rolls
+    perDiceRollOutput.innerHTML = '';
+
+    // Single die: hide individual display
+    if (result.count === 1) {
+        perDiceRollOutput.style.display = 'none';
+        testResultOutput.innerHTML = result.total;
+    }
+    // Multiple dice: show individual rolls
+    else {
+        perDiceRollOutput.style.display = 'flex';
+
+        // Create a span for each die rolled
+        result.rolls.forEach((roll) => {
+            const span = document.createElement('span');
+            span.className = 'per-dice-roll';
+            span.textContent = roll;
+
+            //Color code based on roll value
+            if (roll === result.sides) {
+                // Max roll (e.g., 20 on d20)
+                span.style.background = '#4000ff';
+                span.style.color = 'white';
+                span.style.border = 'none';
+            } else if (roll === 1) {
+                // Min roll (always 1)
+                span.style.background = '#ff0033';
+                span.style.color = 'white';
+                span.style.border = 'none';
+            }
+
+            // Add to container
+            perDiceRollOutput.appendChild(span);
+        });
+
+        // Show total
+        testResultOutput.innerHTML = result.total;
+    }
+
+    // Color the total based on result
+    updateTotalColor(result);
+}
+
+function updateTotalColor(result) {
+    const testResultOutput = document.querySelector('#test-result-output');
+    if (!testResultOutput) return;
+
+    let bgColor = '';
+    const { total, count, sides, dc } = result;
+
+    // Check for perfect rolls first
+    if (total === count * sides) {
+        bgColor = '#4000ff'; // Perfect roll
+    } else if ( total === count) {
+        bgColor = '#ff0033'; // Minimum roll
+    } else if (dc > 0) {
+        bgColor = total >= dc ? '#00cc44' : '#ff0033'; // Check against DC for success or fail
+    }
+
+    // Else no color
+    testResultOutput.style.backgroundColor = bgColor;
+}
+
+// DEPRECATED rollDice FUCNTION
+// function rollDice(count, sides, dc, desc) {
+//     let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+//     let total = 0;
+//     let rolls = [];
+
+//     for (let i = 0; i < count; i++) {
+//         const roll = Math.floor(Math.random() * sides) + 1;
+//         rolls.push(roll);
+
+//         if (count == '1' || count == 1) {
+//             perDiceRollOutput.style.display = 'none';
+//         } else {
+//             perDiceRollOutput.style.display = 'flex';
+//             if (roll == sides) {
+//                 perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: blue; color: white;">${roll}</span>`;
+//             } else if (roll == 1) {
+//                 perDiceRollOutput.innerHTML += `<span class="per-dice-roll" style="border: none; background: red; color: white;">${roll}</span>`;
+//             } else {
+//                 perDiceRollOutput.innerHTML += `<span class="per-dice-roll">${roll}</span>`;
+//             }
+//         }
+
+//         console.log(`Rolled a d${sides}: ${roll}`);
+//         total += roll;
+//     }
+
+//     // Check for success or failure against DC and return message
+//     if (dc == 0) {
+//         console.log('Roll total: ' + total);
+//         if (desc == false) {
+//             return total;
+//         } else {
+//             return 'Roll total: ' + total + ' (no DC)';
+//         }
+//     } else if (total < dc) {
+//         console.log(`Roll failed: ${total} (needed ${dc} or higher)`);
+//         if (desc == false) {
+//             return total;
+//         } else {
+//             return "Roll failed with " + total;
+//         }
+//     } else if (total >= dc) {
+//         console.log(`Roll succeeded: ${total} (needed ${dc} or higher)`);
+//         if (desc == false) {
+//             return total;
+//         } else {
+//             return "Roll succeeded with " + total;
+//         }
+//     }
+// }
 
 // console.log(`Test roll: 2d20 with DC of 15. Result: ${rollDice(2, 20, 15)}`);
