@@ -170,6 +170,15 @@ body {
 }
 
 /* ============================================
+   PAGE ELEMENTS
+   ============================================ */
+
+.app-icon {
+    display: inline-block;
+    animation: spinIcon 15s ease-in-out infinite;
+}
+
+/* ============================================
    FORM ELEMENTS
    ============================================ */
 input,
@@ -544,3 +553,25 @@ textarea {
         display: none;
     }
 }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+   @keyframes spinIcon {
+    0% {
+        transform: rotate(0deg);
+    }
+    1% {
+        transform: rotate(-15deg);
+    }
+    9% {
+        transform: rotate(735deg);
+    }
+    11% {
+        transform: rotate(720deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+   }
