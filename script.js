@@ -646,8 +646,6 @@ function displayDiceRolls(result) {
                 span.style.border = 'none';
             }
 
-            console.log(span.style.opacity);
-
             // Add event listener for each span element
             span.addEventListener('click', () => {
                 let testResultOutput = document.querySelector('#test-result-output');
@@ -656,7 +654,7 @@ function displayDiceRolls(result) {
                 console.log('Clicked on dice showing ' + roll);
                 console.log('Span opacity set to ' + span.style.opacity);
                 result.total = span.style.opacity == '1' ? result.total += roll : result.total -= roll;
-                console.log(result.total);
+                console.log('Total rolled set to ' + result.total);
 
                 testResultOutput.innerHTML = result.total;
             })
