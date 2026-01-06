@@ -385,7 +385,7 @@ testRollButton.addEventListener('click', () => {
         alertBox.style.display = 'none';
         
         console.log('Alert box successfully hidden');
-    }
+    });
 
     resetTestButton.addEventListener('click', () => {
         console.log('Reset test roll button pressed');
