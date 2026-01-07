@@ -485,23 +485,23 @@ testRollButton.addEventListener('click', () => {
 });
 
 // Next Buttons Events
-nextOneButton.addEventListener('click', () => {
-    // Dummy function contents
+// nextOneButton.addEventListener('click', () => {
+//     // Dummy function contents
 
-    // console.log('Next button pressed');
+//     console.log('Next button pressed');
 
-    // if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
+//     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
 
-    //     alertBox.style.display = 'flex';
-    //     alertBoxTitle.innerText = 'Character incomplete';
-    //     alertBoxDescription.innerText = 'Please complete all necessary fields in order to continue.';
-    //     characterRaceSelect.focus();
+//         alertBox.style.display = 'flex';
+//         alertBoxTitle.innerText = 'Character incomplete';
+//         alertBoxDescription.innerText = 'Please complete all necessary fields in order to continue.';
+//         characterRaceSelect.focus();
 
-    //     console.log('No race selected - alert displayed');
-    // } else {
-    //     return;
-    // }
-});
+//         console.log('No race selected - alert displayed');
+//     } else {
+//         return;
+//     }
+// });
 
 // Reset Character Creation Button Events
 characterResetButton.addEventListener('click', () => {
@@ -598,7 +598,7 @@ function rollDice(count, sides, dc = 0) {
 
     // Check for special rolls (only on d20s)
     const hasNatural20 = sides === 20 && rolls.includes(20);
-    const hasNatural1 = sides === 20 & rolls.includes(1);
+    const hasNatural1 = sides === 20 && rolls.includes(1);
 
     // Return all the data
     return {
