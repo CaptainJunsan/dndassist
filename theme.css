@@ -365,6 +365,43 @@ textarea {
 }
 
 /* ============================================
+   TRAIT DISPLAY STYLES
+   ============================================ */
+
+.trait-item {
+    margin: 12px 0;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.02);
+    border-left: 3px solid #007bff;
+    border-radius: 4px;
+}
+
+.trait-name {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.trait-source {
+    font-size: 0.85em;
+    color: #007bff;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.trait-description {
+    font-size: 0.9em;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* Subrace container initially hidden */
+#subrace-select-container {
+    display: none;
+}
+
+/* ============================================
    SIDEBARS
    ============================================ */
 .sidebar {

@@ -13,7 +13,8 @@
 
     <div class="container" id="app-header">
         <div class="app-title-description">
-            <h1 class="title"><img class="app-icon" src="Favicon.svg" alt="White outlined d20 dice on a black disk" style="height: 28px; width: auto; margin-bottom: -1px; margin-right: 10px;">D&D Assistant</h1>
+            <h1 class="title"><img class="app-icon" src="Favicon.svg" alt="White outlined d20 dice on a black disk"
+                    style="height: 28px; width: auto; margin-bottom: -1px; margin-right: 10px;">D&D Assistant</h1>
             <p class="description">Your Dungeons and Dragons Game assistant</p>
         </div>
 
@@ -52,6 +53,13 @@
                                 <option value="Half-Elf">Half-Elf</option>
                                 <option value="Half-Orc">Half-Orc</option>
                                 <option value="Tiefling">Tiefling</option>
+                            </select>
+                        </label>
+                        <!-- NEW: Subrace dropdown (hidden by default) -->
+                        <label for="character-subrace" id="subrace-select-container" style="display: none;">Select a
+                            subrace
+                            <select name="character-subrace" id="character-subrace">
+                                <option value="" disabled selected>Select a subrace</option>
                             </select>
                         </label>
                     </div>
@@ -109,7 +117,10 @@
         <!-- <button type="button" class="button danger close-button" id="close-alert-box-button">Close</button> -->
     </div>
 
-    <!-- Script tag -->
+    <!-- Race file script tag -->
+     <script src="races.js"></script>
+
+    <!-- Main script tag -->
     <script src="script.js"></script>
 </body>
 

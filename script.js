@@ -14,6 +14,8 @@ const cancelCharacterCreationButton = document.querySelector('#cancel-character-
 const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
 const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
 const characterOverviewContainer = document.querySelector('#character-overview');
+const characterSubraceSelect = document.querySelector('#character-subrace');
+const subraceSelectContainer = document.querySelector('#subrace-select-container');
 
 let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
 
@@ -62,12 +64,32 @@ function updateUIVisibility() {
 function updateCharacterOverview() {
     const name = characterNameInput.value || characterNameInput.placeholder;
     const race = characterRaceSelect.value;
+    const subrace = characterSubraceSelect?.value || null;
     const charClass = characterClassSelect.value;
     const sex = characterSexSelect.value;
 
     // Get race data (if available)
     const raceData = races[race] || null;
+    const subraceData = (raceData && subrace && raceData.subraces) ? raceData.subraces[subrace] : null;
     const classData = classes[charClass] || null;
+
+    // Calculate total ability score modifiers (race + subrace)
+    const totalAbilityMods = {};
+    if (raceData) {
+        Object.assign(totalAbilityMods, raceData.abilityScoreModifiers);
+    }
+    if (subraceData) {
+        // Add subrace modifiers on top of race modifiers
+        Object.entries(subraceData.abilityScoreModifiers).forEach(([ability, bonus]) => {
+            totalAbilityMods[ability] = (totalAbilityMods[ability] || 0) + bonus;
+        });
+    }
+
+    // Get effective speed (subrace can override)
+    const effectiveSpeed = (subraceData?.speed) || (raceData?.speed) || 30;
+
+    // Get effective darkvision (subrace can override)
+    const effectiveDarkvision = (subraceData?.darkvision !== undefined) ? subraceData.darkvision : (raceData?.darkvision || 0);
 
     characterOverviewContainer.innerHTML = `
         <div class="overview-section">
@@ -81,7 +103,7 @@ function updateCharacterOverview() {
             
             <div class="overview-stat">
                 <span class="stat-label">Race:</span>
-                <span class="stat-final-value">${race}</span>
+                <span class="stat-final-value">${race}${subrace ? ' (' + subrace + ')' : ''}</span>
             </div>
             
             <div class="overview-stat">
@@ -102,8 +124,8 @@ function updateCharacterOverview() {
                     <!-- Speed -->
                     <div class="overview-stat">
                         <span class="stat-label">Speed:</span>
-                        <span class="stat-final-value">${raceData.speed} ft</span>
-                        <span class="stat-explanation">(from <span class="modifier-source">Race</span>)</span>
+                        <span class="stat-final-value">${effectiveSpeed} ft</span>
+                        <span class="stat-explanation">(from <span class="modifier-source">${subraceData?.speed ? subrace : 'Race'}</span>)</span>
                     </div>
                     
                     <!-- Size -->
@@ -112,9 +134,80 @@ function updateCharacterOverview() {
                         <span class="stat-final-value">${raceData.size}</span>
                         <span class="stat-explanation">(from <span class="modifier-source">Race</span>)</span>
                     </div>
+                    
+                    ${effectiveDarkvision > 0 ? `
+                        <!-- Darkvision -->
+                        <div class="overview-stat">
+                            <span class="stat-label">Darkvision:</span>
+                            <span class="stat-final-value">${effectiveDarkvision} ft</span>
+                            <span class="stat-explanation">(from <span class="modifier-source">${subraceData?.darkvision ? subrace : 'Race'}</span>)</span>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Ability Score Modifiers -->
+                    ${Object.keys(totalAbilityMods).length > 0 ? `
+                        <div class="overview-divider"></div>
+                        <h4 class="overview-subtitle">Ability Score Increases</h4>
+                        ${Object.entries(totalAbilityMods).map(([ability, bonus]) => {
+        if (ability === 'choice') return ''; // Skip the "choice" indicator for Half-Elf
+        const abilityNames = {
+            str: 'Strength',
+            dex: 'Dexterity',
+            con: 'Constitution',
+            int: 'Intelligence',
+            wis: 'Wisdom',
+            cha: 'Charisma'
+        };
+        return `
+                                <div class="overview-stat">
+                                    <span class="stat-label">${abilityNames[ability]}:</span>
+                                    <span class="stat-final-value">+${bonus}</span>
+                                    <span class="stat-explanation">(from <span class="modifier-source">${subrace || 'Race'}</span>)</span>
+                                </div>
+                            `;
+    }).join('')}
+                        ${totalAbilityMods.choice ? `
+                            <div class="overview-stat">
+                                <span class="stat-label">Your Choice:</span>
+                                <span class="stat-final-value">+1 to two abilities</span>
+                                <span class="stat-explanation">(from <span class="modifier-source">Half-Elf</span>)</span>
+                            </div>
+                        ` : ''}
+                    ` : ''}
+                    
+                    <!-- Languages -->
+                    ${raceData.languages?.length > 0 ? `
+                        <div class="overview-divider"></div>
+                        <h4 class="overview-subtitle">Languages</h4>
+                        <div class="overview-stat">
+                            <span class="stat-label">Known:</span>
+                            <span class="stat-final-value">${raceData.languages.join(', ')}</span>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Racial Traits -->
+                    ${raceData.traits?.length > 0 || subraceData?.traits?.length > 0 ? `
+                        <div class="overview-divider"></div>
+                        <h4 class="overview-subtitle">Racial Traits</h4>
+                        ${raceData.traits.map(trait => `
+                            <div class="trait-item">
+                                <div class="trait-name">${trait.name}</div>
+                                <div class="trait-description">${trait.description}</div>
+                            </div>
+                        `).join('')}
+                        ${subraceData?.traits ? subraceData.traits.map(trait => `
+                            <div class="trait-item">
+                                <div class="trait-name">${trait.name} <span class="trait-source">(${subrace})</span></div>
+                                <div class="trait-description">${trait.description}</div>
+                            </div>
+                        `).join('') : ''}
+                    ` : ''}
                 ` : ''}
                 
                 ${classData ? `
+                    <div class="overview-divider"></div>
+                    <h4 class="overview-subtitle">Class Features</h4>
+                    
                     <!-- Hit Die -->
                     <div class="overview-stat">
                         <span class="stat-label">Hit Die:</span>
@@ -192,35 +285,6 @@ class Character {
         this.flaws = data.flaws || '';
         this.appearance = data.appearance || '';
         this.notes = data.notes || '';
-    }
-}
-
-// Race Objects
-
-const races = {
-    "Human": {
-        abilityScoreModifiers: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 },
-        speed: 30,
-        size: "Medium",
-        languages: ["Common", "one extra"],
-        traits: [
-            "Extra Language",
-            "Versatile (extra skill proficiency option)"
-        ],
-        description: "Versatile and adaptable...",
-        subRace: null
-    },
-    "Dwarf": {
-        abilityScoreModifiers: { con: 2 },
-        speed: 25,
-        size: "Medium",
-        languages: ["Common", "Dwarvish"],
-        traits: [
-            "Extra Language",
-            "Versatile (extra skill proficiency option)"
-        ],
-        description: "Versatile and adaptable...",
-        subRace: ["Hill", "Mountain"]
     }
 }
 
@@ -489,6 +553,10 @@ characterResetButton.addEventListener('click', () => {
 
     characterNameInput.value = '';
     characterRaceSelect.value = 'Select a race';
+    characterClassSelect.value = 'Select a class';
+    characterSexSelect.value = 'Select a sex';
+    characterSubraceSelect.value = '';
+    subraceSelectContainer.style.display = 'none';
 
     updateCharacterOverview();
 
@@ -527,6 +595,42 @@ characterRaceSelect.addEventListener('change', () => {
     updateCharacterOverview();
 
     console.log('Character race set to ' + characterRaceSelect.value);
+});
+
+characterRaceSelect.addEventListener('change', () => {
+    console.log('Character race selection changed');
+
+    const selectedRace = characterRaceSelect.value;
+    const raceData = races[selectedRace];
+
+    // Show/hide subrace dropdown based on whether race has subraces
+    if (raceData && raceData.subraces) {
+        subraceSelectContainer.style.display = 'flex';
+
+        // Populate subrace dropdown
+        characterSubraceSelect.innerHTML = '<option value="" disabled selected>Select a subrace</option>';
+        Object.keys(raceData.subraces).forEach(subraceName => {
+            const option = document.createElement('option');
+            option.value = subraceName;
+            option.textContent = subraceName;
+            characterSubraceSelect.appendChild(option);
+        });
+    } else {
+        subraceSelectContainer.style.display = 'none';
+        characterSubraceSelect.value = '';
+    }
+
+    updateCharacterOverview();
+
+    console.log('Character race set to ' + characterRaceSelect.value);
+});
+
+characterSubraceSelect.addEventListener('change', () => {
+    console.log('Character subrace selection changed');
+
+    updateCharacterOverview();
+
+    console.log('Character subrace set to ' + characterSubraceSelect.value);
 });
 
 characterClassSelect.addEventListener('change', () => {
@@ -592,26 +696,12 @@ function displayDiceRolls(result) {
     if (testResultOutput && !testResultOutput.dataset.copyAttached) {
         testResultOutput.addEventListener('click', async () => {
             const text = testResultOutput.innerText;
-            if (!navigator.clipboard) {
-                // Fallback for non-secure contexts
-                const el = document.createElement('textarea');
-                el.value = text;
-                document.body.appendChild(el);
-                el.select();
-                try {
-                    document.execCommand('copy');
-                    console.log('Copied to clipboard (fallback): ' + text);
-                } catch (err) {
-                    console.error('Fallback copy failed:', err);
-                }
-                document.body.removeChild(el);
-                return;
-            }
             try {
                 await navigator.clipboard.writeText(text);
                 console.log('Copied to clipboard: ' + text);
             } catch (err) {
-                console.error('Clipboard write failed:', err);
+                console.error('Clipboard copy failed:', err);
+                alert('Failed to copy: ' + err.message);
             }
         });
         testResultOutput.dataset.copyAttached = 'true';
