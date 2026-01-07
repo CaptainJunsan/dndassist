@@ -602,6 +602,10 @@ textarea {
     .alert-box .close-alert-box-button {
         display: none;
     }
+   
+   .alert-box .button-row {
+      flex-grow: space-between;
+   }
 }
 
 /* ============================================
