@@ -5,7 +5,6 @@ const createCharacterFormContainer = document.querySelector('#create-character-f
 const loadCharacterButton = document.querySelector('#load-character-button');
 const showTipsButton = document.querySelector('#show-tips-button');
 const testRollButton = document.querySelector('#test-roll');
-const nextOneButton = document.querySelector('#next-one');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
 const characterRaceSelect = document.querySelector('#character-race');
@@ -483,25 +482,6 @@ testRollButton.addEventListener('click', () => {
     });
 
 });
-
-// Next Buttons Events
-// nextOneButton.addEventListener('click', () => {
-//     // Dummy function contents
-
-//     console.log('Next button pressed');
-
-//     if (characterRaceSelect.value === 'Select a race' || characterRaceSelect.value === '') {
-
-//         alertBox.style.display = 'flex';
-//         alertBoxTitle.innerText = 'Character incomplete';
-//         alertBoxDescription.innerText = 'Please complete all necessary fields in order to continue.';
-//         characterRaceSelect.focus();
-
-//         console.log('No race selected - alert displayed');
-//     } else {
-//         return;
-//     }
-// });
 
 // Reset Character Creation Button Events
 characterResetButton.addEventListener('click', () => {
