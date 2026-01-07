@@ -1,6 +1,7 @@
 /* ============================================
    FONT IMPORTS
    ============================================ */
+   
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
@@ -8,6 +9,7 @@
 /* ============================================
    GLOBAL RESET & BASE STYLES
    ============================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -29,6 +31,7 @@ body {
 /* ============================================
    TYPOGRAPHY
    ============================================ */
+
 .title {
     font-family: 'Oswald', sans-serif;
     font-weight: 600;
@@ -44,6 +47,7 @@ body {
 /* ============================================
    LAYOUT CONTAINERS
    ============================================ */
+
 .container {
     display: flex;
     flex-direction: column;
@@ -86,6 +90,7 @@ body {
 /* ============================================
    BUTTONS
    ============================================ */
+
 .button {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
@@ -181,6 +186,7 @@ body {
 /* ============================================
    FORM ELEMENTS
    ============================================ */
+
 input,
 select,
 textarea {
@@ -239,6 +245,7 @@ textarea {
 /* ============================================
    CHARACTER CREATION FORM
    ============================================ */
+
 #create-character-form {
     display: none;
     background-color: #e1e1e1;
@@ -270,6 +277,7 @@ textarea {
 /* ============================================
    CHARACTER OVERVIEW
    ============================================ */
+
 .column-container {
     display: none;
     flex-direction: column;
@@ -295,6 +303,7 @@ textarea {
 /* ============================================
    CHARACTER OVERVIEW - ENHANCED
    ============================================ */
+
 .overview-section {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     border: 2px solid #e0e0e0;
@@ -404,6 +413,7 @@ textarea {
 /* ============================================
    SIDEBARS
    ============================================ */
+
 .sidebar {
     height: 100vh;
     padding: 24px;
@@ -448,6 +458,7 @@ textarea {
 /* ============================================
    ALERT BOX
    ============================================ */
+
 .alert-box {
     display: none;
     flex-direction: column;
@@ -560,6 +571,7 @@ textarea {
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
+
 @media screen and (max-width: 1000px) {
     #show-tips-button {
         display: none;
