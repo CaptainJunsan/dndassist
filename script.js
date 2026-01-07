@@ -545,15 +545,6 @@ characterSexSelect.addEventListener('change', () => {
     console.log('Character sex set to: ' + characterSexSelect.value);
 })
 
-// Alert Box Events
-// closeAlertBoxButton.addEventListener('click', () => {
-//     console.log('Close alert box button pressed');
-
-//     alertBox.style.display = 'none';
-
-//     console.log('Alert box closed');
-// })
-
 // --- END EVENT LISTENERS ---
 // ---------------------------
 
@@ -596,6 +587,35 @@ function rollDice(count, sides, dc = 0) {
 function displayDiceRolls(result) {
     const perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     const testResultOutput = document.querySelector('#test-result-output');
+
+    // Attach click-to-copy listener once (works for single or multiple dice)
+    if (testResultOutput && !testResultOutput.dataset.copyAttached) {
+        testResultOutput.addEventListener('click', async () => {
+            const text = testResultOutput.innerText;
+            if (!navigator.clipboard) {
+                // Fallback for non-secure contexts
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                try {
+                    document.execCommand('copy');
+                    console.log('Copied to clipboard (fallback): ' + text);
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                }
+                document.body.removeChild(el);
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(text);
+                console.log('Copied to clipboard: ' + text);
+            } catch (err) {
+                console.error('Clipboard write failed:', err);
+            }
+        });
+        testResultOutput.dataset.copyAttached = 'true';
+    }
 
     let spanRollID = 0;
 
@@ -640,12 +660,16 @@ function displayDiceRolls(result) {
 
             // Add event listener for each span element
             span.addEventListener('click', () => {
-                let testResultOutput = document.querySelector('#test-result-output');
-
                 span.style.opacity = span.style.opacity == '1' ? '0.3' : '1';
                 console.log('Clicked on dice showing ' + roll);
                 console.log('Span opacity set to ' + span.style.opacity);
-                result.total = span.style.opacity == '1' ? result.total += roll : result.total -= roll;
+
+                // Update total (avoid compound assignment inside ternary)
+                if (span.style.opacity == '1') {
+                    result.total += roll;
+                } else {
+                    result.total -= roll;
+                }
                 console.log('Total rolled set to ' + result.total);
 
                 testResultOutput.innerHTML = result.total;
