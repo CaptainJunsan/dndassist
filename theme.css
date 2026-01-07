@@ -604,8 +604,7 @@ textarea {
     }
    
    .alert-box .button-row {
-      justify-content: center;
-      flex-grow: space-between;
+      justify-content: space-between;
    }
 }
 
