@@ -22,6 +22,7 @@ const abilityScoreMethodSelect = document.querySelector('#ability-score-method')
 const availableScoresContainer = document.querySelector('#available-scores-container');
 const availableScoresDiv = document.querySelector('#available-scores');
 const abilityAssignmentContainer = document.querySelector('#ability-assignment-container');
+const rerollScoresButton = document.querySelector('#reroll-scores-button');
 
 const alertBox = document.querySelector('#main-alert-box');
 const alertBoxTitle = alertBox.querySelector('.title');
@@ -972,6 +973,12 @@ function generateScoreChips(scores) {
         });
 
         availableScoresDiv.appendChild(chip);
+
+        rerollScoresButton.addEventListener('click', () => {
+            abilityScoreMethodSelect.value = 'rolled';
+            const changeEvent = new Event('change', { bubbles: true });
+            abilityScoreMethodSelect.dispatchEvent(changeEvent);
+        })
     });
 }
 
@@ -1027,6 +1034,12 @@ function removeScoreFromAbility(ability) {
 abilityScoreMethodSelect.addEventListener('change', () => {
     const method = abilityScoreMethodSelect.value;
     abilityScoreState.method = method;
+
+    if (method == 'rolled') {
+        rerollScoresButton.style.display = "flex";
+    } else {
+        rerollScoresButton.style.display = 'none';
+    }
 
     // Reset state
     abilityScoreState.availableScores = [];

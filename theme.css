@@ -643,6 +643,10 @@ textarea {
     transform: scale(1.1);
 }
 
+#reroll-scores-button {
+    margin-top: 15px;
+}
+
 /* Ability Assignment Grid */
 #ability-assignment-container {
     display: flex;
