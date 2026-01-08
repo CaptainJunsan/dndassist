@@ -588,6 +588,10 @@ textarea {
     border: 1px solid #ccc;
 }
 
+#available-scores-container {
+    margin-left: 5px;
+}
+
 .section-title {
     font-family: 'Oswald', sans-serif;
     font-size: 1.4em;
@@ -598,9 +602,9 @@ textarea {
 }
 
 .scores-label {
-    font-size: 0.9em;
+    font-size: 12px;
     font-weight: 600;
-    color: #444;
+    color: #000;
     margin-bottom: 8px;
 }
 
@@ -621,7 +625,7 @@ textarea {
     width: 50px;
     height: 50px;
     background-color: #ffffff;
-    border: 2px solid #333;
+    border: 1px solid #333;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -651,6 +655,7 @@ textarea {
 #ability-assignment-container {
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
     gap: 10px;
 }
 
@@ -658,10 +663,20 @@ textarea {
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 10px;
     background-color: #ffffff;
     border-radius: 6px;
     border: 1px solid #ddd;
+}
+
+.ability-row:first-of-type {
+    margin-top: 0;
+}
+
+.ability-row:last-of-type {
+    margin-bottom: 0;
 }
 
 .ability-label {
@@ -679,7 +694,7 @@ textarea {
     width: 60px;
     height: 60px;
     background-color: #f0f0f0;
-    border: 2px dashed #999;
+    border: 1px dashed #999;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -760,6 +775,16 @@ textarea {
     
     .alert-box .close-alert-box-button {
         display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .dice-icon-buttons-container {
+        justify-content: space-around;
+    }
+
+    .alert-box .button-row {
+        justify-content: space-between;
     }
 }
 
