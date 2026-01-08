@@ -41,7 +41,7 @@ body {
 .description {
     font-size: 14px;
     color: #333333;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
 }
 
 /* ============================================
@@ -207,7 +207,6 @@ textarea {
     width: fit-content;
     max-width: 1200px;
     padding: 15px;
-    border-radius: 5px;
 }
 
 .form form {
@@ -224,7 +223,6 @@ textarea {
     font-size: 12px;
     font-weight: 700;
     margin-top: 5px;
-    margin-left: 5px;
     margin-bottom: -5px;
 }
 
@@ -250,6 +248,8 @@ textarea {
     display: none;
     background-color: #e1e1e1;
     border: 1px solid #949494;
+    border-radius: 5px;
+    width: auto;
 }
 
 .character-form {
@@ -306,10 +306,9 @@ textarea {
 
 .overview-section {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .overview-title {
@@ -340,6 +339,10 @@ textarea {
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
+.overview-stat:last-of-type {
+    border-bottom: none;
+}
+
 .stat-label {
     font-weight: 600;
     min-width: 130px;
@@ -348,8 +351,8 @@ textarea {
 }
 
 .stat-final-value {
-    font-size: 1.4em;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     color: #000;
     font-family: 'Oswald', sans-serif;
 }
@@ -497,7 +500,6 @@ textarea {
     font-size: 12px;
     font-weight: 700;
     margin-top: 5px;
-    margin-left: 5px;
     margin-bottom: -5px;
 }
 
@@ -588,9 +590,8 @@ textarea {
     border: 1px solid #ccc;
 }
 
-#available-scores-container {
-    margin-left: 5px;
-}
+/* #available-scores-container {
+} */
 
 .section-title {
     font-family: 'Oswald', sans-serif;
@@ -655,7 +656,6 @@ textarea {
 #ability-assignment-container {
     display: flex;
     flex-direction: column;
-    margin-left: 5px;
     gap: 10px;
 }
 
