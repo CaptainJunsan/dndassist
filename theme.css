@@ -1,7 +1,7 @@
 /* ============================================
    FONT IMPORTS
    ============================================ */
-   
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
@@ -33,6 +33,7 @@ body {
    ============================================ */
 
 .title {
+    margin-top: -11px;
     font-family: 'Oswald', sans-serif;
     font-weight: 600;
     line-height: 1.75em;
@@ -51,7 +52,7 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 15px;
     width: fit-content;
     max-width: 1200px;
     border-radius: 5px;
@@ -75,17 +76,17 @@ body {
    LAYOUT CONFIGURATIONS
    ============================================ */
 
-   .full {
+.full {
     display: flex;
     padding: 0;
     margin: 0;
     width: 100%;
-   }
+}
 
-   .center-content {
+.center-content {
     justify-content: center;
     align-items: center;
-   }
+}
 
 /* ============================================
    BUTTONS
@@ -222,14 +223,14 @@ textarea {
     gap: 8px;
     font-size: 12px;
     font-weight: 700;
-    margin-top: 5px;
-    margin-bottom: -5px;
+
 }
 
 .form-title {
-    margin-top: -11px;
     margin-bottom: 5px;
+    Font-size: 24px;
     font-weight: 500;
+    color: #000000;
     text-transform: uppercase;
 }
 
@@ -243,6 +244,12 @@ textarea {
 /* ============================================
    CHARACTER CREATION FORM
    ============================================ */
+
+.title-description-block {
+    display: flex;
+    flex-direction: column;
+    gap: none;
+}
 
 #create-character-form {
     display: none;
@@ -259,7 +266,7 @@ textarea {
     width: 100%;
 }
 
-.character-form > .button-row {
+.character-form>.button-row {
     justify-content: flex-end;
     padding-top: 25px;
     border-top: 1px solid #cccccc;
@@ -287,13 +294,13 @@ textarea {
     color: #333333;
 }
 
-.column-container > .title {
+.column-container>.title {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: -15px;
 }
 
-.column-container > .column-container-text {
+.column-container>.column-container-text {
     font-size: 14px;
     color: #333333;
     margin-top: -5px;
@@ -308,17 +315,7 @@ textarea {
     background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     border: 1px solid #e0e0e0;
     border-radius: 5px;
-    padding: 20px;
-}
-
-.overview-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.6em;
-    font-weight: 600;
-    margin-bottom: 16px;
-    border-bottom: 3px solid #333;
-    padding-bottom: 10px;
-    color: #222;
+    padding: 15px;
 }
 
 .overview-subtitle {
@@ -336,7 +333,7 @@ textarea {
     align-items: baseline;
     gap: 12px;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .overview-stat:last-of-type {
@@ -351,7 +348,7 @@ textarea {
 }
 
 .stat-final-value {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 500;
     color: #000;
     font-family: 'Oswald', sans-serif;
@@ -413,50 +410,7 @@ textarea {
     display: none;
 }
 
-/* ============================================
-   SIDEBARS
-   ============================================ */
 
-.sidebar {
-    height: 100vh;
-    padding: 24px;
-    width: 400px;
-}
-
-.sidebar.right {
-    position: fixed;
-    right: 0;
-    top: 0;
-    background-color: #f0f0f0;
-    border-left: 1px solid #ccc;
-}
-
-.sidebar.left {
-    position: fixed;
-    left: 0;
-    top: 0;
-    background-color: #f0f0f0;
-    border-right: 1px solid #ccc;
-}
-
-.sidebar-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.sidebar-title {
-    font-weight: 500;
-}
-
-#character-creation-tips-sidebar {
-    display: none;
-}
-
-#show-tips-button {
-    display: none;
-}
 
 /* ============================================
    ALERT BOX
@@ -478,17 +432,17 @@ textarea {
     z-index: 1000;
 }
 
-.alert-box > #close-alert-box-button {
+.alert-box>#close-alert-box-button {
     position: absolute;
     top: 10px;
     right: 10px;
 }
 
-.alert-box > .title {
+.alert-box>.title {
     font-size: 24px;
 }
 
-.alert-box > .description {
+.alert-box>.description {
     width: 100%;
     margin-bottom: 0;
 }
@@ -499,8 +453,6 @@ textarea {
     gap: 8px;
     font-size: 12px;
     font-weight: 700;
-    margin-top: 5px;
-    margin-bottom: -5px;
 }
 
 .alert-box .button-row {
@@ -582,21 +534,19 @@ textarea {
 .ability-scores-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     width: 100%;
-    padding: 20px;
+    padding: 15px;
     background-color: #f5f5f5;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
 
-/* #available-scores-container {
-} */
-
 .section-title {
     font-family: 'Oswald', sans-serif;
     font-size: 1.4em;
     font-weight: 600;
+    margin-top: -7px;
     margin-bottom: 10px;
     color: #222;
     text-transform: uppercase;
@@ -747,32 +697,11 @@ textarea {
    ============================================ */
 
 @media screen and (max-width: 1000px) {
-    #show-tips-button {
-        display: none;
-    }
-
-    .sidebar {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .sidebar.right,
-    .sidebar.left {
-        position: fixed;
-        margin-left: auto;
-        margin-right: auto;
-        width: 80vw;
-        height: fit-content;
-        left: 10vw;
-        right: 10vw;
-        top: 50px;
-    }
 
     .alert-box {
         width: 95vw;
     }
-    
+
     .alert-box .close-alert-box-button {
         display: none;
     }
@@ -796,20 +725,24 @@ textarea {
    ANIMATIONS
    ============================================ */
 
-   @keyframes spinIcon {
+@keyframes spinIcon {
     0% {
         transform: rotate(0deg);
     }
+
     1% {
         transform: rotate(-15deg);
     }
+
     9% {
         transform: rotate(735deg);
     }
+
     11% {
         transform: rotate(720deg);
     }
+
     100% {
         transform: rotate(720deg);
     }
-   }
+}
