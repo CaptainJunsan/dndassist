@@ -3,7 +3,6 @@
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
-const showTipsButton = document.querySelector('#show-tips-button');
 const testRollButton = document.querySelector('#test-roll');
 const characterResetButton = document.querySelector('#character-reset-button');
 const characterNameInput = document.querySelector('#character-name');
@@ -11,8 +10,6 @@ const characterRaceSelect = document.querySelector('#character-race');
 const characterClassSelect = document.querySelector('#character-class');
 const characterSexSelect = document.querySelector('#character-sex');
 const cancelCharacterCreationButton = document.querySelector('#cancel-character-creation-button');
-const characterCreationTipsSidebar = document.querySelector('#character-creation-tips-sidebar');
-const closeTipsSidebarButton = document.querySelector('#close-tips-sidebar-button');
 const characterOverviewContainer = document.querySelector('#character-overview');
 const characterSubraceSelect = document.querySelector('#character-subrace');
 const subraceSelectContainer = document.querySelector('#subrace-select-container');
@@ -39,30 +36,20 @@ const DESKTOP_BREAKPOINT = 1000;
 
 const appState = {
     screenWidth: window.innerWidth,
-    isCharFormVisible: false,
-    isTipsSidebarVisible: false,
-    isShowTipsButtonVisible: false
+    isCharFormVisible: false
 };
 
 // UPDATE UI FUNCTION
 
 function updateUIVisibility() {
     // 1. Read the app state
-    const { screenWidth, isCharFormVisible, isTipsSidebarVisible } = appState;
+    const { screenWidth, isCharFormVisible } = appState;
 
     // 2. Update the character form visibility
     createCharacterFormContainer.style.display = isCharFormVisible ? 'flex' : 'none';
 
-    // 3. Apply changes to the DOM
-    if (isCharFormVisible) {
-        characterCreationTipsSidebar.style.display = isTipsSidebarVisible ? 'flex' : 'none';
-        showTipsButton.style.display = isTipsSidebarVisible ? 'none' : 'block';
-        characterOverviewContainer.style.display = 'flex';
-    } else {
-        characterCreationTipsSidebar.style.display = 'none';
-        showTipsButton.style.display = 'none';
-        characterOverviewContainer.style.display = 'none';
-    }
+    // 3. Show or hide the overview when the form is visible
+    characterOverviewContainer.style.display = isCharFormVisible ? 'flex' : 'none';
 };
 
 // UPDATE CHARACTER OVERVIEW FUNCTION
@@ -129,7 +116,7 @@ function updateCharacterOverview() {
 
     characterOverviewContainer.innerHTML = `
         <div class="overview-section">
-            <h3 class="overview-title">Character Overview</h3>
+            <h3 class="title form-title">Character Overview</h3>
             
             <!-- Basic Info -->
             <div class="overview-stat">
@@ -379,8 +366,6 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character button pressed');
 
     appState.isCharFormVisible = true;
-    appState.isTipsSidebarVisible = false;
-    // appState.isTipsSidebarVisible = (appState.screenWidth > DESKTOP_BREAKPOINT);
     updateUIVisibility();
     updateCharacterOverview();
     createCharacterButton.disabled = true;
@@ -388,15 +373,7 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character form displayed');
 });
 
-// Close Sidebar Button Events
-closeTipsSidebarButton.addEventListener('click', () => {
-    console.log('Close tips sidebar button pressed');
 
-    appState.isTipsSidebarVisible = false;
-    updateUIVisibility();
-
-    console.log('Character creation tips sidebar hidden');
-})
 
 // Load Character Button Events
 loadCharacterButton.addEventListener('click', () => {
@@ -407,15 +384,7 @@ loadCharacterButton.addEventListener('click', () => {
     console.log('Load character alert displayed');
 })
 
-// Show Sidebar Button Events
-showTipsButton.addEventListener('click', () => {
-    console.log('Show tips button pressed');
 
-    appState.isTipsSidebarVisible = !appState.isTipsSidebarVisible;
-    updateUIVisibility();
-
-    console.log('Tips sidebar shown');
-})
 
 // Test Roll Button Events
 testRollButton.addEventListener('click', () => {
@@ -618,7 +587,6 @@ cancelCharacterCreationButton.addEventListener('click', () => {
     characterResetButton.click();
 
     appState.isCharFormVisible = false;
-    appState.isTipsSidebarVisible = false;
 
     updateUIVisibility();
 
