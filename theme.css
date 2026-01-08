@@ -201,6 +201,12 @@ textarea {
     background-color: white;
 }
 
+input[type=range] {
+    width: 200px;
+    accent-color: #007bff;
+}
+
+
 .form {
     display: flex;
     flex-direction: column;
