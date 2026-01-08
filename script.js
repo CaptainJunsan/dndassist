@@ -401,15 +401,15 @@ testRollButton.addEventListener('click', () => {
                 <input type='number' id='test-dice-count' min='1' max='10' value='1'>
             </label>
             <label for='test-difficulty'>Difficulty Class (DC)
-                <select name='test-difficulty' id='test-difficulty'>
-                    <option selected value='0'>None</option>
+                <input type='range' name='test-difficulty' id='test-difficulty' min='0' max='50' step='5' value='0'>
+                    <!-- <option selected value='0'>None</option>
                     <option value='5'>5 - Dead Easy</option>
                     <option value='10'>10 - Easy</option>
                     <option value='15'>15 - Moderate</option>
                     <option value='20'>20 - Difficult</option>
                     <option value='25'>25 - Extremely Difficult</option>
-                    <option value='30'>30 - Nearly Impossible</option>
-                </select>
+                    <option value='30'>30 - Nearly Impossible</option> -->
+                </range>
             </label>
         </div>
         <br>
