@@ -89,9 +89,91 @@
                             </select>
                         </label>
                     </div>
-                    <div class="form-row">
-                        <p>Additional input fields here...</p>
+                    <div class="form-row ability-scores-section">
+                        <div class="ability-scores-container">
+                            <h3 class="section-title">Ability Scores</h3>
+
+                            <!-- Generation Method Selector -->
+                            <label for="ability-score-method">Generation Method
+                                <select name="ability-score-method" id="ability-score-method">
+                                    <option value="" disabled selected>Select method</option>
+                                    <option value="standard">Standard Array (simplest)</option>
+                                    <option value="rolled">Rolled Scores (authentic)</option>
+                                    <option value="manual">Manual Entry</option>
+                                    <option value="pointbuy">Point Buy (advanced)</option>
+                                </select>
+                            </label>
+
+                            <!-- Available Scores (chips) -->
+                            <div id="available-scores-container" style="display: none;">
+                                <p class="scores-label">Available Scores (click to assign):</p>
+                                <div id="available-scores" class="score-chips"></div>
+                                <button type="button" class="button" id="reroll-scores-button"><img src='uiButtonIcon_white.svg'>Reroll Scores</button>
+                            </div>
+
+                            <!-- Ability Score Assignment Grid -->
+                            <div id="ability-assignment-container" style="display: none;">
+                                <p class="scores-label">Assign to Abilities:</p>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">STR</span>
+                                    <div class="ability-score-slot" data-ability="str" id="str-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="str-racial">+0</span>
+                                    <span class="final-score" id="str-final">= -- (+--)</span>
+                                </div>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">DEX</span>
+                                    <div class="ability-score-slot" data-ability="dex" id="dex-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="dex-racial">+0</span>
+                                    <span class="final-score" id="dex-final">= -- (+--)</span>
+                                </div>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">CON</span>
+                                    <div class="ability-score-slot" data-ability="con" id="con-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="con-racial">+0</span>
+                                    <span class="final-score" id="con-final">= -- (+--)</span>
+                                </div>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">INT</span>
+                                    <div class="ability-score-slot" data-ability="int" id="int-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="int-racial">+0</span>
+                                    <span class="final-score" id="int-final">= -- (+--)</span>
+                                </div>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">WIS</span>
+                                    <div class="ability-score-slot" data-ability="wis" id="wis-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="wis-racial">+0</span>
+                                    <span class="final-score" id="wis-final">= -- (+--)</span>
+                                </div>
+
+                                <div class="ability-row">
+                                    <span class="ability-label">CHA</span>
+                                    <div class="ability-score-slot" data-ability="cha" id="cha-slot">
+                                        <span class="score-value">--</span>
+                                    </div>
+                                    <span class="racial-bonus" id="cha-racial">+0</span>
+                                    <span class="final-score" id="cha-final">= -- (+--)</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- <div class="form-row">
+                        <p>Additional input fields here...</p>
+                    </div> -->
                     <div class="button-row">
                         <button type="button" class="button secondary" id="character-reset-button">Reset</button>
                         <button type="button" class="button danger"
@@ -106,7 +188,7 @@
 
     <div class="sidebar right" id="character-creation-tips-sidebar">
         <div class="sidebar-title-row">
-            <h2 class="title sidebar-title">Tipss</h2>
+            <h2 class="title sidebar-title">Tips</h2>
             <button type="button" class="button danger close-button" id="close-tips-sidebar-button">Close</button>
         </div>
     </div>
@@ -117,8 +199,11 @@
         <!-- <button type="button" class="button danger close-button" id="close-alert-box-button">Close</button> -->
     </div>
 
+    <!-- Class file script tag -->
+    <script src="classes.js"></script>
+
     <!-- Race file script tag -->
-     <script src="races.js"></script>
+    <script src="races.js"></script>
 
     <!-- Main script tag -->
     <script src="script.js"></script>

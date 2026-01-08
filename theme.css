@@ -569,6 +569,180 @@ textarea {
 }
 
 /* ============================================
+   ABILITY SCORE SYSTEM
+   ============================================ */
+
+.ability-scores-section {
+    flex-direction: column;
+    width: 100%;
+}
+
+.ability-scores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+#available-scores-container {
+    margin-left: 5px;
+}
+
+.section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #222;
+    text-transform: uppercase;
+}
+
+.scores-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+/* Score Chips */
+.score-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.score-chip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.score-chip:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.score-chip.selected {
+    background-color: #28a745;
+    color: white;
+    border-color: #1e7e34;
+    transform: scale(1.1);
+}
+
+#reroll-scores-button {
+    margin-top: 15px;
+}
+
+/* Ability Assignment Grid */
+#ability-assignment-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    gap: 10px;
+}
+
+.ability-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.ability-row:first-of-type {
+    margin-top: 0;
+}
+
+.ability-row:last-of-type {
+    margin-bottom: 0;
+}
+
+.ability-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    min-width: 50px;
+    color: #333;
+}
+
+.ability-score-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background-color: #f0f0f0;
+    border: 1px dashed #999;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ability-score-slot:hover {
+    background-color: #e0e0e0;
+    border-color: #666;
+}
+
+.ability-score-slot.filled {
+    background-color: #007bff;
+    border: 2px solid #0056b3;
+    color: white;
+}
+
+.ability-score-slot.filled:hover {
+    background-color: #dc3545;
+    border-color: #bd2130;
+}
+
+.ability-score-slot .score-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.ability-score-slot.filled .score-value {
+    color: white;
+}
+
+.racial-bonus {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    color: #007bff;
+    min-width: 40px;
+}
+
+.final-score {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #222;
+    margin-left: auto;
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
@@ -606,6 +780,16 @@ textarea {
    .alert-box .button-row {
       justify-content: space-between;
    }
+}
+
+@media screen and (max-width: 600px) {
+    .dice-icon-buttons-container {
+        justify-content: space-around;
+    }
+
+    .alert-box .button-row {
+        justify-content: space-between;
+    }
 }
 
 /* ============================================
