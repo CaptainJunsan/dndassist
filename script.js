@@ -17,12 +17,17 @@ const characterOverviewContainer = document.querySelector('#character-overview')
 const characterSubraceSelect = document.querySelector('#character-subrace');
 const subraceSelectContainer = document.querySelector('#subrace-select-container');
 
-let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+// DOM Elements for Ability Scores
+const abilityScoreMethodSelect = document.querySelector('#ability-score-method');
+const availableScoresContainer = document.querySelector('#available-scores-container');
+const availableScoresDiv = document.querySelector('#available-scores');
+const abilityAssignmentContainer = document.querySelector('#ability-assignment-container');
 
 const alertBox = document.querySelector('#main-alert-box');
 const alertBoxTitle = alertBox.querySelector('.title');
 const alertBoxDescription = alertBox.querySelector('.description');
-// const closeAlertBoxButton = document.querySelector('#close-alert-box-button');
+
+let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
 
 // SCREEN WIDTH
 
@@ -68,7 +73,7 @@ function updateCharacterOverview() {
     const charClass = characterClassSelect.value;
     const sex = characterSexSelect.value;
 
-    // Get race data (if available)
+    // Get race data
     const raceData = races[race] || null;
     const subraceData = (raceData && subrace && raceData.subraces) ? raceData.subraces[subrace] : null;
     const classData = classes[charClass] || null;
@@ -79,17 +84,47 @@ function updateCharacterOverview() {
         Object.assign(totalAbilityMods, raceData.abilityScoreModifiers);
     }
     if (subraceData) {
-        // Add subrace modifiers on top of race modifiers
         Object.entries(subraceData.abilityScoreModifiers).forEach(([ability, bonus]) => {
             totalAbilityMods[ability] = (totalAbilityMods[ability] || 0) + bonus;
         });
     }
 
-    // Get effective speed (subrace can override)
+    // Get effective speed and darkvision
     const effectiveSpeed = (subraceData?.speed) || (raceData?.speed) || 30;
-
-    // Get effective darkvision (subrace can override)
     const effectiveDarkvision = (subraceData?.darkvision !== undefined) ? subraceData.darkvision : (raceData?.darkvision || 0);
+
+    // Calculate final ability scores and modifiers
+    const finalAbilityScores = {};
+    const abilityModifiers = {};
+    let allAbilitiesAssigned = true;
+
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const base = abilityScoreState.assignedScores[ability];
+        if (base === null) {
+            allAbilitiesAssigned = false;
+            finalAbilityScores[ability] = null;
+            abilityModifiers[ability] = null;
+        } else {
+            const racialBonus = totalAbilityMods[ability] || 0;
+            finalAbilityScores[ability] = base + racialBonus;
+            abilityModifiers[ability] = calculateModifier(finalAbilityScores[ability]);
+        }
+    });
+
+    // Calculate derived stats
+    const conMod = abilityModifiers.con || 0;
+    const dexMod = abilityModifiers.dex || 0;
+    const wisMod = abilityModifiers.wis || 0;
+
+    let hp = classData && finalAbilityScores.con !== null ? classData.hitDieValue + conMod : null;
+    // Hill Dwarf bonus
+    if (subrace === 'Hill Dwarf' && hp !== null) {
+        hp += 1;
+    }
+
+    const initiative = finalAbilityScores.dex !== null ? (dexMod >= 0 ? `+${dexMod}` : `${dexMod}`) : null;
+    const passivePerception = finalAbilityScores.wis !== null ? 10 + wisMod : null;
+    const profBonus = 2; // Level 1
 
     characterOverviewContainer.innerHTML = `
         <div class="overview-section">
@@ -115,20 +150,72 @@ function updateCharacterOverview() {
                 <span class="stat-label">Sex:</span>
                 <span class="stat-final-value">${sex}</span>
             </div>
+
+            ${allAbilitiesAssigned ? `
+                <div class="overview-divider"></div>
+                <h4 class="overview-subtitle">Ability Scores</h4>
+                
+                ${['str', 'dex', 'con', 'int', 'wis', 'cha'].map(ability => {
+                    const abilityNames = {
+                        str: 'Strength',
+                        dex: 'Dexterity',
+                        con: 'Constitution',
+                        int: 'Intelligence',
+                        wis: 'Wisdom',
+                        cha: 'Charisma'
+                    };
+                    const score = finalAbilityScores[ability];
+                    const mod = abilityModifiers[ability];
+                    const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+                    return `
+                        <div class="overview-stat">
+                            <span class="stat-label">${abilityNames[ability]}:</span>
+                            <span class="stat-final-value">${score} (${modStr})</span>
+                        </div>
+                    `;
+                }).join('')}
+
+                <div class="overview-divider"></div>
+                <h4 class="overview-subtitle">Derived Stats</h4>
+
+                ${hp !== null ? `
+                    <div class="overview-stat">
+                        <span class="stat-label">Hit Points:</span>
+                        <span class="stat-final-value">${hp}</span>
+                        <span class="stat-explanation">(${classData.hitDie} + CON ${subrace === 'Hill Dwarf' ? '+ 1 Hill Dwarf' : ''})</span>
+                    </div>
+                ` : ''}
+
+                <div class="overview-stat">
+                    <span class="stat-label">Initiative:</span>
+                    <span class="stat-final-value">${initiative || '--'}</span>
+                    <span class="stat-explanation">(DEX modifier)</span>
+                </div>
+
+                <div class="overview-stat">
+                    <span class="stat-label">Proficiency Bonus:</span>
+                    <span class="stat-final-value">+${profBonus}</span>
+                    <span class="stat-explanation">(Level 1)</span>
+                </div>
+
+                <div class="overview-stat">
+                    <span class="stat-label">Passive Perception:</span>
+                    <span class="stat-final-value">${passivePerception || '--'}</span>
+                    <span class="stat-explanation">(10 + WIS modifier)</span>
+                </div>
+            ` : ''}
             
             ${raceData || classData ? `
                 <div class="overview-divider"></div>
                 <h4 class="overview-subtitle">Character Stats</h4>
                 
                 ${raceData ? `
-                    <!-- Speed -->
                     <div class="overview-stat">
                         <span class="stat-label">Speed:</span>
                         <span class="stat-final-value">${effectiveSpeed} ft</span>
                         <span class="stat-explanation">(from <span class="modifier-source">${subraceData?.speed ? subrace : 'Race'}</span>)</span>
                     </div>
                     
-                    <!-- Size -->
                     <div class="overview-stat">
                         <span class="stat-label">Size:</span>
                         <span class="stat-final-value">${raceData.size}</span>
@@ -136,7 +223,6 @@ function updateCharacterOverview() {
                     </div>
                     
                     ${effectiveDarkvision > 0 ? `
-                        <!-- Darkvision -->
                         <div class="overview-stat">
                             <span class="stat-label">Darkvision:</span>
                             <span class="stat-final-value">${effectiveDarkvision} ft</span>
@@ -144,38 +230,6 @@ function updateCharacterOverview() {
                         </div>
                     ` : ''}
                     
-                    <!-- Ability Score Modifiers -->
-                    ${Object.keys(totalAbilityMods).length > 0 ? `
-                        <div class="overview-divider"></div>
-                        <h4 class="overview-subtitle">Ability Score Increases</h4>
-                        ${Object.entries(totalAbilityMods).map(([ability, bonus]) => {
-        if (ability === 'choice') return ''; // Skip the "choice" indicator for Half-Elf
-        const abilityNames = {
-            str: 'Strength',
-            dex: 'Dexterity',
-            con: 'Constitution',
-            int: 'Intelligence',
-            wis: 'Wisdom',
-            cha: 'Charisma'
-        };
-        return `
-                                <div class="overview-stat">
-                                    <span class="stat-label">${abilityNames[ability]}:</span>
-                                    <span class="stat-final-value">+${bonus}</span>
-                                    <span class="stat-explanation">(from <span class="modifier-source">${subrace || 'Race'}</span>)</span>
-                                </div>
-                            `;
-    }).join('')}
-                        ${totalAbilityMods.choice ? `
-                            <div class="overview-stat">
-                                <span class="stat-label">Your Choice:</span>
-                                <span class="stat-final-value">+1 to two abilities</span>
-                                <span class="stat-explanation">(from <span class="modifier-source">Half-Elf</span>)</span>
-                            </div>
-                        ` : ''}
-                    ` : ''}
-                    
-                    <!-- Languages -->
                     ${raceData.languages?.length > 0 ? `
                         <div class="overview-divider"></div>
                         <h4 class="overview-subtitle">Languages</h4>
@@ -185,7 +239,6 @@ function updateCharacterOverview() {
                         </div>
                     ` : ''}
                     
-                    <!-- Racial Traits -->
                     ${raceData.traits?.length > 0 || subraceData?.traits?.length > 0 ? `
                         <div class="overview-divider"></div>
                         <h4 class="overview-subtitle">Racial Traits</h4>
@@ -208,12 +261,35 @@ function updateCharacterOverview() {
                     <div class="overview-divider"></div>
                     <h4 class="overview-subtitle">Class Features</h4>
                     
-                    <!-- Hit Die -->
                     <div class="overview-stat">
                         <span class="stat-label">Hit Die:</span>
                         <span class="stat-final-value">${classData.hitDie}</span>
                         <span class="stat-explanation">(from <span class="modifier-source">Class</span>)</span>
                     </div>
+
+                    ${classData.classFeatures.map(feature => `
+                        <div class="trait-item">
+                            <div class="trait-name">${feature.name}</div>
+                            <div class="trait-description">${feature.description}</div>
+                        </div>
+                    `).join('')}
+
+                    ${classData.spellcasting ? `
+                        <div class="overview-divider"></div>
+                        <h4 class="overview-subtitle">Spellcasting</h4>
+                        <div class="overview-stat">
+                            <span class="stat-label">Ability:</span>
+                            <span class="stat-final-value">${classData.spellcasting.ability}</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="stat-label">Cantrips Known:</span>
+                            <span class="stat-final-value">${classData.spellcasting.cantripsKnown}</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="stat-label">1st Level Slots:</span>
+                            <span class="stat-final-value">${classData.spellcasting.spellSlots[1]}</span>
+                        </div>
+                    ` : ''}
                 ` : ''}
             ` : ''}
         </div>
@@ -285,36 +361,6 @@ class Character {
         this.flaws = data.flaws || '';
         this.appearance = data.appearance || '';
         this.notes = data.notes || '';
-    }
-}
-
-const classes = {
-    "Fighter": {
-        hitDie: "d10",
-        primaryAbilities: ["Strength", "Dexterity"],
-        savingThrowProficiencies: ["Strength", "Constitution"],
-        armorProficiencies: ["All armor", "Shields"],
-        weaponProficiencies: ["Simple weapons", "Martial weapons"],
-        skillChoices: {
-            choose: 2,
-            from: ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"]
-        },
-        startingEquipment: [
-            // Equipment options...
-        ],
-        classFeatures: [
-            {
-                name: "Fighting Style",
-                level: 1,
-                description: "Choose a fighting style..."
-            },
-            {
-                name: "Second Wind",
-                level: 1,
-                description: "Regain hit points as a bonus action..."
-            }
-        ],
-        spellcasting: null
     }
 }
 
@@ -625,6 +671,8 @@ characterRaceSelect.addEventListener('change', () => {
     console.log('Character race set to ' + characterRaceSelect.value);
 });
 
+characterRaceSelect.addEventListener('change', updateRacialBonuses);
+
 characterSubraceSelect.addEventListener('change', () => {
     console.log('Character subrace selection changed');
 
@@ -632,6 +680,8 @@ characterSubraceSelect.addEventListener('change', () => {
 
     console.log('Character subrace set to ' + characterSubraceSelect.value);
 });
+
+characterSubraceSelect.addEventListener('change', updateRacialBonuses);
 
 characterClassSelect.addEventListener('change', () => {
     console.log('Character class selection changed');
@@ -654,38 +704,59 @@ characterSexSelect.addEventListener('change', () => {
 
 // CUSTOM DICE ROLL FUNCTION
 
-function rollDice(count, sides, dc = 0) {
-    const rolls = []; // Store individual rolls
-    let total = 0; // Sum of all rolls
+// REFACTORED DICE ROLL FUNCTION
+// Universal dice roller with processing modes
+
+function rollDice(count, sides, process = null) {
+    const rolls = [];
+    let total = 0;
+    let dropped = [];
 
     // Roll each die
     for (let i = 0; i < count; i++) {
         const roll = Math.floor(Math.random() * sides) + 1;
-        rolls.push(roll); // Save roll
-        total += roll; // Add to total
+        rolls.push(roll);
+        total += roll;
     }
 
-    // Calculate success/failure (if DC exists)
-    let status = 'none';
-    if (dc > 0) {
-        status = total >= dc ? 'success' : 'fail';
+    // Apply processing rules
+    if (process === 'abilityScore' && count >= 2) {
+        // Find the lowest roll (only first occurrence if multiple)
+        const lowest = Math.min(...rolls);
+        const lowestIndex = rolls.indexOf(lowest);
+        
+        // Drop it from total
+        total -= lowest;
+        dropped.push(lowest);
+        
+        // Mark it as dropped (for display purposes)
+        rolls[lowestIndex] = { value: lowest, dropped: true };
     }
 
-    // Check for special rolls (only on d20s)
-    const hasNatural20 = sides === 20 && rolls.includes(20);
-    const hasNatural1 = sides === 20 && rolls.includes(1);
+    // Check for special rolls (only on d20s without processing)
+    const hasNatural20 = sides === 20 && !process && rolls.includes(20);
+    const hasNatural1 = sides === 20 && !process && rolls.includes(1);
 
-    // Return all the data
     return {
-        rolls: rolls,
         total: total,
-        dc: dc,
-        status: status,
+        rolls: rolls,
+        dropped: dropped,
+        process: process || 'standard',
         sides: sides,
         count: count,
         hasNatural20: hasNatural20,
         hasNatural1: hasNatural1
     };
+}
+
+// Helper function: Generate 6 ability scores using 4d6 drop lowest
+function generateRolledAbilityScores() {
+    const scores = [];
+    for (let i = 0; i < 6; i++) {
+        const result = rollDice(4, 6, 'abilityScore');
+        scores.push(result.total);
+    }
+    return scores;
 }
 
 function displayDiceRolls(result) {
@@ -796,3 +867,217 @@ function updateTotalColor(result) {
     // Else no color
     testResultOutput.style.backgroundColor = bgColor;
 }
+
+// Ability Score State
+const abilityScoreState = {
+    method: null,
+    availableScores: [],
+    assignedScores: { str: null, dex: null, con: null, int: null, wis: null, cha: null },
+    selectedChip: null
+};
+
+// Calculate ability modifier
+function calculateModifier(score) {
+    return Math.floor((score - 10) / 2);
+}
+
+// Update racial bonuses display
+function updateRacialBonuses() {
+    const race = characterRaceSelect.value;
+    const subrace = characterSubraceSelect?.value || null;
+    const raceData = races[race] || null;
+    const subraceData = (raceData && subrace && raceData.subraces) ? raceData.subraces[subrace] : null;
+
+    // Calculate total ability score modifiers (race + subrace)
+    const totalAbilityMods = {};
+    if (raceData) {
+        Object.assign(totalAbilityMods, raceData.abilityScoreModifiers);
+    }
+    if (subraceData) {
+        Object.entries(subraceData.abilityScoreModifiers).forEach(([ability, bonus]) => {
+            totalAbilityMods[ability] = (totalAbilityMods[ability] || 0) + bonus;
+        });
+    }
+
+    // Update each ability's racial bonus display
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const bonus = totalAbilityMods[ability] || 0;
+        const bonusElement = document.querySelector(`#${ability}-racial`);
+        if (bonusElement) {
+            bonusElement.textContent = bonus > 0 ? `+${bonus}` : `+0`;
+        }
+    });
+
+    // Recalculate final scores
+    updateFinalScores();
+}
+
+// Update final scores and modifiers
+function updateFinalScores() {
+    const race = characterRaceSelect.value;
+    const subrace = characterSubraceSelect?.value || null;
+    const raceData = races[race] || null;
+    const subraceData = (raceData && subrace && raceData.subraces) ? raceData.subraces[subrace] : null;
+
+    // Get racial bonuses
+    const totalAbilityMods = {};
+    if (raceData) {
+        Object.assign(totalAbilityMods, raceData.abilityScoreModifiers);
+    }
+    if (subraceData) {
+        Object.entries(subraceData.abilityScoreModifiers).forEach(([ability, bonus]) => {
+            totalAbilityMods[ability] = (totalAbilityMods[ability] || 0) + bonus;
+        });
+    }
+
+    // Update each ability
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const baseScore = abilityScoreState.assignedScores[ability];
+        const racialBonus = totalAbilityMods[ability] || 0;
+        const finalElement = document.querySelector(`#${ability}-final`);
+
+        if (baseScore !== null) {
+            const finalScore = baseScore + racialBonus;
+            const modifier = calculateModifier(finalScore);
+            const modifierStr = modifier >= 0 ? `+${modifier}` : `${modifier}`;
+            finalElement.textContent = `= ${finalScore} (${modifierStr})`;
+        } else {
+            finalElement.textContent = `= -- (+-)`;
+        }
+    });
+
+    // Update overview
+    updateCharacterOverview();
+}
+
+// Generate score chips
+function generateScoreChips(scores) {
+    availableScoresDiv.innerHTML = '';
+    abilityScoreState.availableScores = [...scores];
+
+    scores.forEach((score, index) => {
+        const chip = document.createElement('div');
+        chip.className = 'score-chip';
+        chip.textContent = score;
+        chip.dataset.score = score;
+        chip.dataset.index = index;
+
+        chip.addEventListener('click', () => {
+            // Deselect previous chip
+            document.querySelectorAll('.score-chip').forEach(c => c.classList.remove('selected'));
+            
+            // Select this chip
+            chip.classList.add('selected');
+            abilityScoreState.selectedChip = score;
+        });
+
+        availableScoresDiv.appendChild(chip);
+    });
+}
+
+// Assign score to ability
+function assignScoreToAbility(ability, score) {
+    // Remove score from available
+    const scoreIndex = abilityScoreState.availableScores.indexOf(score);
+    if (scoreIndex > -1) {
+        abilityScoreState.availableScores.splice(scoreIndex, 1);
+    }
+
+    // Assign to ability
+    abilityScoreState.assignedScores[ability] = score;
+
+    // Update slot display
+    const slot = document.querySelector(`#${ability}-slot .score-value`);
+    slot.textContent = score;
+    document.querySelector(`#${ability}-slot`).classList.add('filled');
+
+    // Regenerate chips
+    generateScoreChips(abilityScoreState.availableScores);
+    abilityScoreState.selectedChip = null;
+
+    // Update final scores
+    updateFinalScores();
+}
+
+// Remove score from ability
+function removeScoreFromAbility(ability) {
+    const score = abilityScoreState.assignedScores[ability];
+    if (score === null) return;
+
+    // Add score back to available
+    abilityScoreState.availableScores.push(score);
+    abilityScoreState.availableScores.sort((a, b) => b - a); // Sort descending
+
+    // Remove from ability
+    abilityScoreState.assignedScores[ability] = null;
+
+    // Update slot display
+    const slot = document.querySelector(`#${ability}-slot .score-value`);
+    slot.textContent = '--';
+    document.querySelector(`#${ability}-slot`).classList.remove('filled');
+
+    // Regenerate chips
+    generateScoreChips(abilityScoreState.availableScores);
+
+    // Update final scores
+    updateFinalScores();
+}
+
+// Event listener: Ability score method selection
+abilityScoreMethodSelect.addEventListener('change', () => {
+    const method = abilityScoreMethodSelect.value;
+    abilityScoreState.method = method;
+
+    // Reset state
+    abilityScoreState.availableScores = [];
+    abilityScoreState.assignedScores = { str: null, dex: null, con: null, int: null, wis: null, cha: null };
+    abilityScoreState.selectedChip = null;
+
+    // Clear all slots
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const slot = document.querySelector(`#${ability}-slot .score-value`);
+        slot.textContent = '--';
+        document.querySelector(`#${ability}-slot`).classList.remove('filled');
+    });
+
+    // Generate scores based on method
+    let scores = [];
+    if (method === 'standard') {
+        scores = [15, 14, 13, 12, 10, 8];
+    } else if (method === 'rolled') {
+        scores = generateRolledAbilityScores();
+    } else if (method === 'manual') {
+        // TODO: Implement manual entry
+        alert('Manual entry not yet implemented');
+        return;
+    } else if (method === 'pointbuy') {
+        // TODO: Implement point buy
+        alert('Point buy not yet implemented');
+        return;
+    }
+
+    // Show UI
+    availableScoresContainer.style.display = 'block';
+    abilityAssignmentContainer.style.display = 'block';
+
+    // Generate score chips
+    generateScoreChips(scores);
+
+    console.log(`Ability scores generated (${method}):`, scores);
+});
+
+// Event listeners: Ability score slots
+document.querySelectorAll('.ability-score-slot').forEach(slot => {
+    slot.addEventListener('click', () => {
+        const ability = slot.dataset.ability;
+        const currentScore = abilityScoreState.assignedScores[ability];
+
+        if (currentScore !== null) {
+            // Remove score if already assigned
+            removeScoreFromAbility(ability);
+        } else if (abilityScoreState.selectedChip !== null) {
+            // Assign selected chip
+            assignScoreToAbility(ability, abilityScoreState.selectedChip);
+        }
+    });
+});
