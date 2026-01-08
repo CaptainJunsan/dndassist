@@ -201,7 +201,7 @@ textarea {
     background-color: white;
 }
 
-input[type=range] {
+input[type="range"] {
     width: 200px;
     accent-color: #007bff;
 }
