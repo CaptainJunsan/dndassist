@@ -144,24 +144,24 @@ function updateCharacterOverview() {
                 <h4 class="overview-subtitle">Ability Scores</h4>
                 
                 ${['str', 'dex', 'con', 'int', 'wis', 'cha'].map(ability => {
-                    const abilityNames = {
-                        str: 'Strength',
-                        dex: 'Dexterity',
-                        con: 'Constitution',
-                        int: 'Intelligence',
-                        wis: 'Wisdom',
-                        cha: 'Charisma'
-                    };
-                    const score = finalAbilityScores[ability];
-                    const mod = abilityModifiers[ability];
-                    const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
-                    return `
+        const abilityNames = {
+            str: 'Strength',
+            dex: 'Dexterity',
+            con: 'Constitution',
+            int: 'Intelligence',
+            wis: 'Wisdom',
+            cha: 'Charisma'
+        };
+        const score = finalAbilityScores[ability];
+        const mod = abilityModifiers[ability];
+        const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+        return `
                         <div class="overview-stat">
                             <span class="stat-label">${abilityNames[ability]}:</span>
                             <span class="stat-final-value">${score} (${modStr})</span>
                         </div>
                     `;
-                }).join('')}
+    }).join('')}
 
                 <div class="overview-divider"></div>
                 <h4 class="overview-subtitle">Derived Stats</h4>
@@ -401,15 +401,10 @@ testRollButton.addEventListener('click', () => {
                 <input type='number' id='test-dice-count' min='1' max='10' value='1'>
             </label>
             <label for='test-difficulty'>Difficulty Class (DC)
-                <input type='range' name='test-difficulty' id='test-difficulty' min='0' max='50' step='5' value='0'>
-                    <!-- <option selected value='0'>None</option>
-                    <option value='5'>5 - Dead Easy</option>
-                    <option value='10'>10 - Easy</option>
-                    <option value='15'>15 - Moderate</option>
-                    <option value='20'>20 - Difficult</option>
-                    <option value='25'>25 - Extremely Difficult</option>
-                    <option value='30'>30 - Nearly Impossible</option> -->
-                </range>
+                <div id='dc-text-slider'>
+                    <p id='dc-value-text'></p>
+                    <input type='range' name='test-difficulty' id='test-difficulty' min='0' max='50' step='5' value='0'>
+                </div>
             </label>
         </div>
         <br>
@@ -444,6 +439,7 @@ testRollButton.addEventListener('click', () => {
         </div>`
         ;
 
+    let dcValuetext = document.querySelector('#dc-value-text');
     let testDiceCount = document.querySelector('#test-dice-count');
     let testDiceType = document.querySelector('#test-dice-type');
     let d4Button = document.querySelector('#dice-d4-button');
@@ -460,6 +456,8 @@ testRollButton.addEventListener('click', () => {
     let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     let testResultOutput = document.querySelector('#test-result-output');
 
+    dcValuetext.innerHTML = testDifficulty.value;
+
     function clearSelectedDice() {
         d4Button.classList.remove('selected');
         d6Button.classList.remove('selected');
@@ -469,6 +467,10 @@ testRollButton.addEventListener('click', () => {
         d20Button.classList.remove('selected');
         testDiceType.value = 'Select a dice';
     };
+
+    testDifficulty.addEventListener('input', () => {
+        dcValuetext.innerHTML = testDifficulty.value;
+    })
 
     cancelTestButton.addEventListener('click', () => {
         console.log('Cancel test roll button pressed');
@@ -484,6 +486,8 @@ testRollButton.addEventListener('click', () => {
         testDiceCount.value = '1';
         testDifficulty.value = '0';
         testResultOutput.innerHTML = '';
+
+        dcValuetext.ineerHTML = testDifficulty.value;
 
         testResultOutput.style.backgroundColor = ''; // Reset to default
         testResultOutput.style.fontSize = ''; // Reset to default
@@ -676,7 +680,7 @@ characterSexSelect.addEventListener('change', () => {
 // REFACTORED DICE ROLL FUNCTION
 // Universal dice roller with processing modes
 
-function rollDice(count, sides, process = null) {
+function rollDice(count, sides, dc = 0, process = null) {
     const rolls = [];
     let total = 0;
     let dropped = [];
@@ -693,11 +697,11 @@ function rollDice(count, sides, process = null) {
         // Find the lowest roll (only first occurrence if multiple)
         const lowest = Math.min(...rolls);
         const lowestIndex = rolls.indexOf(lowest);
-        
+
         // Drop it from total
         total -= lowest;
         dropped.push(lowest);
-        
+
         // Mark it as dropped (for display purposes)
         rolls[lowestIndex] = { value: lowest, dropped: true };
     }
@@ -713,6 +717,7 @@ function rollDice(count, sides, process = null) {
         process: process || 'standard',
         sides: sides,
         count: count,
+        dc: dc,
         hasNatural20: hasNatural20,
         hasNatural1: hasNatural1
     };
@@ -722,7 +727,7 @@ function rollDice(count, sides, process = null) {
 function generateRolledAbilityScores() {
     const scores = [];
     for (let i = 0; i < 6; i++) {
-        const result = rollDice(4, 6, 'abilityScore');
+        const result = rollDice(4, 6, 0, 'abilityScore');
         scores.push(result.total);
     }
     return scores;
@@ -934,7 +939,7 @@ function generateScoreChips(scores) {
         chip.addEventListener('click', () => {
             // Deselect previous chip
             document.querySelectorAll('.score-chip').forEach(c => c.classList.remove('selected'));
-            
+
             // Select this chip
             chip.classList.add('selected');
             abilityScoreState.selectedChip = score;
@@ -1073,7 +1078,7 @@ rerollScoresButton.addEventListener('click', () => {
             allScores.push(score);
         }
         abilityScoreState.assignedScores[ability] = null;
-        
+
         // Clear slot display
         const slot = document.querySelector(`#${ability}-slot .score-value`);
         slot.textContent = '--';
