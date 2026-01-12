@@ -1,5 +1,6 @@
 // DOM DECLARATIONS
 
+const body = document.querySelector('body');
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
@@ -391,6 +392,7 @@ testRollButton.addEventListener('click', () => {
     console.log('Test roll button pressed');
 
     alertBox.style.display = 'flex';
+    body.style.overflow = 'hidden';
     alertBoxTitle.innerText = 'Roll some dice!';
     alertBoxDescription.innerText = 'Select the number of dice, type of dice, and difficulty class (DC) to beat.';
 
@@ -407,7 +409,7 @@ testRollButton.addEventListener('click', () => {
             <label for='test-difficulty'>Difficulty Class (DC)
                 <div id='dc-text-slider'>
                     <p id='dc-value-text'></p>
-                    <input type='range' name='test-difficulty' id='test-difficulty' min='0' max='50' step='5' value='0'>
+                    <input type='range' name='test-difficulty' id='test-difficulty' min='0' max='30' step='1' value='0'>
                 </div>
             </label>
         </div>
@@ -494,7 +496,7 @@ testRollButton.addEventListener('click', () => {
         if (testDiceCount.value == 0) {
             testDiceCount.value = 1;
         }
-        
+
         diceCountValueUpdate();
     })
 
@@ -512,6 +514,7 @@ testRollButton.addEventListener('click', () => {
         console.log('Cancel test roll button pressed');
 
         alertBox.style.display = 'none';
+        body.style.overflow = 'auto';
 
         console.log('Alert box successfully hidden');
     });
