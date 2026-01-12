@@ -166,10 +166,13 @@ body {
     border-radius: 99px;
     padding: 0;
     cursor: pointer;
-    height: 52px;
-    width: 52px;
 
     transition: box-shadow 300ms ease;
+}
+
+.large {
+    height: 52px;
+    width: 52px;
 }
 
 .icon-button.selected {
@@ -236,6 +239,7 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 4px;
     background-color: #007bff;
     margin: auto 0;
+    transition: background-color 150ms ease;
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
@@ -506,6 +510,29 @@ input[type="range"]:hover::-webkit-slider-thumb {
     width: 100%;
     justify-content: space-around;
     padding: 15px 0;
+}
+
+#number-input-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+/* hide number input arrows for Edge, Safari, Opera, Chrome */
+.alert-box input[type='number']::-webkit-inner-spin-button,
+.alert-box input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+/* hide number input arrows for Firefox */
+.alert-box input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    text-align: center;
+    width: 40px;
 }
 
 #test-dice-type {

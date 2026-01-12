@@ -398,7 +398,11 @@ testRollButton.addEventListener('click', () => {
         <br><br>
         <div class="form-row">
             <label for='test-dice-count'>Dice
-                <input type='number' id='test-dice-count' min='1' max='10' value='1'>
+                <div id="number-input-container">
+                    <img src="minus_button.svg" class="icon-button" id="minus-button">
+                    <input type='number' id='test-dice-count' min='1' max='10' value='1'>
+                    <img src="plus_button.svg" class="icon-button" id="plus-button">
+                </div>
             </label>
             <label for='test-difficulty'>Difficulty Class (DC)
                 <div id='dc-text-slider'>
@@ -419,12 +423,12 @@ testRollButton.addEventListener('click', () => {
                 <option value='20'>d20</option>
             </select>
             <div id="dice-icon-buttons-container" class="button-row-left">
-                <button type="button" class="icon-button" id="dice-d4-button" title="Select d4"><img src="d4_button.svg" alt="d4"></button>
-                <button type="button" class="icon-button" id="dice-d6-button" title="Select d6"><img src="d6_button.svg" alt="d6"></button>
-                <button type="button" class="icon-button" id="dice-d8-button" title="Select d8"><img src="d8_button.svg" alt="d8"></button>
-                <button type="button" class="icon-button" id="dice-d10-button" title="Select d10"><img src="d10_button.svg" alt="d10"></button>
-                <button type="button" class="icon-button" id="dice-d12-button" title="Select d12"><img src="d12_button.svg" alt="d12"></button>
-                <button type="button" class="icon-button" id="dice-d20-button" title="Select d20"><img src="d20_button.svg" alt="d20"></button>
+                <button type="button" class="icon-button large" id="dice-d4-button" title="Select d4"><img src="d4_button.svg" alt="d4"></button>
+                <button type="button" class="icon-button large" id="dice-d6-button" title="Select d6"><img src="d6_button.svg" alt="d6"></button>
+                <button type="button" class="icon-button large" id="dice-d8-button" title="Select d8"><img src="d8_button.svg" alt="d8"></button>
+                <button type="button" class="icon-button large" id="dice-d10-button" title="Select d10"><img src="d10_button.svg" alt="d10"></button>
+                <button type="button" class="icon-button large" id="dice-d12-button" title="Select d12"><img src="d12_button.svg" alt="d12"></button>
+                <button type="button" class="icon-button large" id="dice-d20-button" title="Select d20"><img src="d20_button.svg" alt="d20"></button>
             </div>
         </label>
         <div class="full center-content" id="roll-results-container">
@@ -441,6 +445,8 @@ testRollButton.addEventListener('click', () => {
 
     let dcValuetext = document.querySelector('#dc-value-text');
     let testDiceCount = document.querySelector('#test-dice-count');
+    let minusBtn = document.querySelector('#minus-button');
+    let plusBtn = document.querySelector('#plus-button');
     let testDiceType = document.querySelector('#test-dice-type');
     let d4Button = document.querySelector('#dice-d4-button');
     let d6Button = document.querySelector('#dice-d6-button');
@@ -467,6 +473,36 @@ testRollButton.addEventListener('click', () => {
         d20Button.classList.remove('selected');
         testDiceType.value = 'Select a dice';
     };
+
+    function diceCountValueUpdate() {
+        if (testDiceCount.value < 2) {
+            minusBtn.style.opacity = 0.5;
+            minusBtn.style.cursor = 'not-allowed';
+        } else {
+            minusBtn.style.opacity = 1;
+            minusBtn.style.cursor = 'pointer';
+        }
+    }
+
+    diceCountValueUpdate();
+
+    minusBtn.addEventListener('click', () => {
+        diceCountValueUpdate();
+
+        testDiceCount.value--;
+
+        if (testDiceCount.value == 0) {
+            testDiceCount.value = 1;
+        }
+        
+        diceCountValueUpdate();
+    })
+
+    plusBtn.addEventListener('click', () => {
+        testDiceCount.value++;
+
+        diceCountValueUpdate();
+    })
 
     testDifficulty.addEventListener('input', () => {
         dcValuetext.innerHTML = testDifficulty.value;
