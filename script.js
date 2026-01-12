@@ -397,7 +397,7 @@ testRollButton.addEventListener('click', () => {
     alertBoxDescription.innerHTML += `
         <br><br>
         <div class="form-row">
-            <label for='test-dice-count'>Number of Dice
+            <label for='test-dice-count'>Dice
                 <input type='number' id='test-dice-count' min='1' max='10' value='1'>
             </label>
             <label for='test-difficulty'>Difficulty Class (DC)
