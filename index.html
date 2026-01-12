@@ -22,7 +22,6 @@
             <button type="button" class="button" id="create-character-button">Create
                 Character</button>
             <button type="button" class="button" id="load-character-button" disabled>Upload Character</button>
-            <button type="button" class="button" id="test-roll">Roll Dice</button>
         </div>
 
     </div>
@@ -174,9 +173,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="form-row">
-                        <p>Additional input fields here...</p>
-                    </div> -->
                     <div class="button-row">
                         <button type="button" class="button secondary" id="character-reset-button">Reset</button>
                         <button type="button" class="button danger"
@@ -192,7 +188,19 @@
     <div class="alert-box" id="main-alert-box">
         <h3 class="title">This is an error</h3>
         <p class="description">This is the description for said error.</p>
-        <!-- <button type="button" class="button danger close-button" id="close-alert-box-button">Close</button> -->
+    </div>
+
+    <!-- Menu Button -->
+    <button type="button" class="main-menu-button" id="menu-button"><img src="menuButtonIcon_black.svg"></button>
+
+    <!-- Roll Dice Button -->
+    <button type="button" class="roll-icon-button" id="test-roll"><img src="uiButtonIcon_white.svg"></button>
+
+    <div class="backdrop">
+        <div class="menu" id="session-menu">
+            <button type="button" class="button menu-item" id="login-button">Login</button>
+            <button type="button" class="button menu-item" id="help-button">Help</button>
+        </div>
     </div>
 
     <!-- Class file script tag -->

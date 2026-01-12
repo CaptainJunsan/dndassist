@@ -1,6 +1,9 @@
-// DOM DECLARATIONS
-
+// DOM element references
 const body = document.querySelector('body');
+const backdrop = document.querySelector('.backdrop');
+const menuButton = document.querySelector('#menu-button');
+const loginButton = document.querySelector('#login-button');
+const helpBUtton = document.querySelector('#help-button');
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
@@ -15,7 +18,7 @@ const characterOverviewContainer = document.querySelector('#character-overview')
 const characterSubraceSelect = document.querySelector('#character-subrace');
 const subraceSelectContainer = document.querySelector('#subrace-select-container');
 
-// DOM Elements for Ability Scores
+// DOM elements for ability scores
 const abilityScoreMethodSelect = document.querySelector('#ability-score-method');
 const availableScoresContainer = document.querySelector('#available-scores-container');
 const availableScoresDiv = document.querySelector('#available-scores');
@@ -28,19 +31,20 @@ const alertBoxDescription = alertBox.querySelector('.description');
 
 let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
 
-// SCREEN WIDTH
+// Hide backdrop initially
+backdrop.style.display = 'none';
 
+// Screen width breakpoint
 const DESKTOP_BREAKPOINT = 1000;
-// Previously used: screen.width;
 
-// *** APP STATE ***
+// App state
 
 const appState = {
     screenWidth: window.innerWidth,
     isCharFormVisible: false
 };
 
-// UPDATE UI FUNCTION
+// Update UI visibility
 
 function updateUIVisibility() {
     // 1. Read the app state
@@ -53,7 +57,7 @@ function updateUIVisibility() {
     characterOverviewContainer.style.display = isCharFormVisible ? 'flex' : 'none';
 };
 
-// UPDATE CHARACTER OVERVIEW FUNCTION
+// Update character overview
 
 function updateCharacterOverview() {
     const name = characterNameInput.value || characterNameInput.placeholder;
@@ -106,7 +110,7 @@ function updateCharacterOverview() {
     const wisMod = abilityModifiers.wis || 0;
 
     let hp = classData && finalAbilityScores.con !== null ? classData.hitDieValue + conMod : null;
-    // Hill Dwarf bonus
+    // Apply Hill Dwarf hit point bonus
     if (subrace === 'Hill Dwarf' && hp !== null) {
         hp += 1;
     }
@@ -285,7 +289,7 @@ function updateCharacterOverview() {
     `;
 }
 
-// CHARACTER OBJECT TEMPLATE
+// Character class template
 
 class Character {
     constructor(data = {}) {
@@ -353,7 +357,25 @@ class Character {
     }
 }
 
-// ============== EVENT LISTENERS ==============
+// ============== Event listeners ==============
+
+// Backdrop click handler
+backdrop.addEventListener('click', () => {
+    backdrop.style.display = 'none';
+})
+
+// Configure menu button
+menuButton.addEventListener('click', () => {
+    backdrop.style.display = 'block';
+})
+
+loginButton.addEventListener('click', () => {
+    alert("Session control not yet implemented :(");
+})
+
+helpBUtton.addEventListener('click', () => {
+    alert("Help feature coming soon :)");
+})
 
 window.addEventListener('resize', function () {
     // Get the new window width
@@ -362,7 +384,7 @@ window.addEventListener('resize', function () {
     // console.log('Window resized to: ' + appState.screenWidth + 'px');
 });
 
-// Create Character Button Events
+// Create character button events
 createCharacterButton.addEventListener('click', () => {
     console.log('Create character button pressed');
 
@@ -376,7 +398,7 @@ createCharacterButton.addEventListener('click', () => {
 
 
 
-// Load Character Button Events
+// Load character button events
 loadCharacterButton.addEventListener('click', () => {
     console.log('Load character button pressed');
 
@@ -387,7 +409,7 @@ loadCharacterButton.addEventListener('click', () => {
 
 
 
-// Test Roll Button Events
+// Test roll button events
 testRollButton.addEventListener('click', () => {
     console.log('Test roll button pressed');
 
@@ -606,7 +628,7 @@ testRollButton.addEventListener('click', () => {
 
 });
 
-// Reset Character Creation Button Events
+// Reset character creation button events
 characterResetButton.addEventListener('click', () => {
     console.log('Character reset button pressed');
 
@@ -653,7 +675,7 @@ characterResetButton.addEventListener('click', () => {
     console.log('Character reset complete');
 });
 
-// Cancel Character Creation Button Events
+// Cancel character creation button events
 cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Cancel character creation button pressed');
 
@@ -669,7 +691,7 @@ cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Character reset, fields cleared and form hidden');
 });
 
-// Character Overview Element Event Listeners
+// Character overview element event listeners
 characterNameInput.addEventListener('keyup', () => {
     console.log('Character name input changing...');
 
@@ -742,12 +764,11 @@ characterSexSelect.addEventListener('change', () => {
     console.log('Character sex set to: ' + characterSexSelect.value);
 })
 
-// --- END EVENT LISTENERS ---
+// --- End event listeners ---
 // ---------------------------
 
-// CUSTOM DICE ROLL FUNCTION
+// Dice roll utilities
 
-// REFACTORED DICE ROLL FUNCTION
 // Universal dice roller with processing modes
 
 function rollDice(count, sides, dc = 0, process = null) {
@@ -793,7 +814,7 @@ function rollDice(count, sides, dc = 0, process = null) {
     };
 }
 
-// Helper function: Generate 6 ability scores using 4d6 drop lowest
+// Helper: generate six ability scores (4d6 drop lowest)
 function generateRolledAbilityScores() {
     const scores = [];
     for (let i = 0; i < 6; i++) {
@@ -807,7 +828,7 @@ function displayDiceRolls(result) {
     const perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     const testResultOutput = document.querySelector('#test-result-output');
 
-    // Attach click-to-copy listener once (works for single or multiple dice)
+    // Attach click-to-copy handler once (works for single or multiple dice)
     if (testResultOutput && !testResultOutput.dataset.copyAttached) {
         testResultOutput.addEventListener('click', async () => {
             const text = testResultOutput.innerText;
@@ -833,7 +854,7 @@ function displayDiceRolls(result) {
     // Clear previous rolls
     perDiceRollOutput.innerHTML = '';
 
-    // Single die: hide individual display
+    // Single die: hide individual roll display
     if (result.count === 1) {
         perDiceRollOutput.style.display = 'none';
         testResultOutput.innerHTML = result.total;
@@ -850,7 +871,7 @@ function displayDiceRolls(result) {
             span.textContent = roll;
             span.style.opacity = '1'; // Set opacity for variable testing later
 
-            //Color code based on roll value
+            // Color code based on roll value
             if (roll === result.sides) {
                 // Max roll (e.g., 20 on d20)
                 span.style.background = '#4000ff';
@@ -863,7 +884,7 @@ function displayDiceRolls(result) {
                 span.style.border = 'none';
             }
 
-            // Add event listener for each span element
+            // Add click handler to each die span
             span.addEventListener('click', () => {
                 span.style.opacity = span.style.opacity == '1' ? '0.3' : '1';
                 console.log('Clicked on dice showing ' + roll);
@@ -908,11 +929,11 @@ function updateTotalColor(result) {
         bgColor = total >= dc ? '#00cc44' : '#ff0033'; // Check against DC for success or fail
     }
 
-    // Else no color
+    // No color otherwise
     testResultOutput.style.backgroundColor = bgColor;
 }
 
-// Ability Score State
+// Ability score state
 const abilityScoreState = {
     method: null,
     availableScores: [],
@@ -994,7 +1015,7 @@ function updateFinalScores() {
     updateCharacterOverview();
 }
 
-// Style available ability score slots (unfilled ones get blue border)
+// Style available ability score slots (unfilled slots get blue border)
 function styleAvailableScoreSlots() {
     let abilityScores = document.querySelectorAll('.ability-score-slot');
 
@@ -1044,7 +1065,7 @@ function generateScoreChips(scores) {
     });
 }
 
-// Assign score to ability
+// Assign score to ability slot
 function assignScoreToAbility(ability, score) {
     // Remove score from available
     const scoreIndex = abilityScoreState.availableScores.indexOf(score);
@@ -1072,7 +1093,7 @@ function assignScoreToAbility(ability, score) {
     updateFinalScores();
 }
 
-// Remove score from ability
+// Remove score from ability slot
 function removeScoreFromAbility(ability) {
     const score = abilityScoreState.assignedScores[ability];
     if (score === null) return;
@@ -1099,7 +1120,7 @@ function removeScoreFromAbility(ability) {
     updateFinalScores();
 }
 
-// Event listener: Ability score method selection
+// Ability score method selection handler
 abilityScoreMethodSelect.addEventListener('change', () => {
     const method = abilityScoreMethodSelect.value;
     abilityScoreState.method = method;
@@ -1148,7 +1169,7 @@ abilityScoreMethodSelect.addEventListener('change', () => {
     console.log(`Ability scores generated (${method}):`, scores);
 });
 
-// Event listeners: Ability score slots
+// Ability score slot click handlers
 document.querySelectorAll('.ability-score-slot').forEach(slot => {
     slot.addEventListener('click', () => {
         const ability = slot.dataset.ability;
@@ -1165,8 +1186,7 @@ document.querySelectorAll('.ability-score-slot').forEach(slot => {
 });
 
 // ============================================
-// RE-ROLL ABILITY SCORES BUTTON EVENT LISTENER
-// (Added once globally, not inside generateScoreChips)
+// Re-roll ability scores button listener (added once globally, not inside generateScoreChips)
 // ============================================
 rerollScoresButton.addEventListener('click', () => {
     console.log('Re-rolling ability scores...');
