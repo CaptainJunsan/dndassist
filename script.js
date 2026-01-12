@@ -941,13 +941,8 @@ function generateScoreChips(scores) {
         });
 
         availableScoresDiv.appendChild(chip);
-
-        rerollScoresButton.addEventListener('click', () => {
-            abilityScoreMethodSelect.value = 'rolled';
-            const changeEvent = new Event('change', { bubbles: true });
-            abilityScoreMethodSelect.dispatchEvent(changeEvent);
-        })
     });
+    // ✅ REROLL LISTENER REMOVED FROM HERE
 }
 
 // Assign score to ability
@@ -1061,4 +1056,40 @@ document.querySelectorAll('.ability-score-slot').forEach(slot => {
             assignScoreToAbility(ability, abilityScoreState.selectedChip);
         }
     });
+});
+
+// ============================================
+// RE-ROLL ABILITY SCORES BUTTON EVENT LISTENER
+// (Added once globally, not inside generateScoreChips)
+// ============================================
+rerollScoresButton.addEventListener('click', () => {
+    console.log('Re-rolling ability scores...');
+
+    // Reset all assigned scores back to available pool
+    const allScores = [];
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const score = abilityScoreState.assignedScores[ability];
+        if (score !== null) {
+            allScores.push(score);
+        }
+        abilityScoreState.assignedScores[ability] = null;
+        
+        // Clear slot display
+        const slot = document.querySelector(`#${ability}-slot .score-value`);
+        slot.textContent = '--';
+        document.querySelector(`#${ability}-slot`).classList.remove('filled');
+    });
+
+    // Generate new rolled scores
+    const newScores = generateRolledAbilityScores();
+    console.log('New scores rolled:', newScores);
+
+    // Update chips with new scores
+    generateScoreChips(newScores);
+
+    // Clear any selected chip
+    abilityScoreState.selectedChip = null;
+
+    // Update final scores display (will show -- for unassigned)
+    updateFinalScores();
 });
