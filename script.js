@@ -467,7 +467,7 @@ testRollButton.addEventListener('click', () => {
         </div>`
         ;
 
-    let dcValuetext = document.querySelector('#dc-value-text');
+    let dcValueText = document.querySelector('#dc-value-text');
     let testDiceCount = document.querySelector('#test-dice-count');
     let minusBtn = document.querySelector('#minus-button');
     let plusBtn = document.querySelector('#plus-button');
@@ -486,7 +486,7 @@ testRollButton.addEventListener('click', () => {
     let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
     let testResultOutput = document.querySelector('#test-result-output');
 
-    dcValuetext.innerHTML = testDifficulty.value;
+    dcValueText.innerHTML = testDifficulty.value;
 
     function clearSelectedDice() {
         d4Button.classList.remove('selected');
@@ -529,7 +529,7 @@ testRollButton.addEventListener('click', () => {
     })
 
     testDifficulty.addEventListener('input', () => {
-        dcValuetext.innerHTML = testDifficulty.value;
+        dcValueText.innerHTML = testDifficulty.value;
     })
 
     cancelTestButton.addEventListener('click', () => {
@@ -548,7 +548,7 @@ testRollButton.addEventListener('click', () => {
         testDifficulty.value = '0';
         testResultOutput.innerHTML = '';
 
-        dcValuetext.innerHTML = testDifficulty.value;
+        dcValueText.innerHTML = testDifficulty.value;
 
         testResultOutput.style.backgroundColor = ''; // Reset to default
         testResultOutput.style.fontSize = ''; // Reset to default
