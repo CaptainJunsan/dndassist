@@ -424,7 +424,7 @@ testRollButton.addEventListener('click', () => {
             <label for='test-dice-count'>Dice
                 <div id="number-input-container">
                     <img src="minus_button.svg" class="icon-button" id="minus-button">
-                    <input type='number' id='test-dice-count' min='1' max='10' value='1'>
+                    <input type='numeric' id='test-dice-count' value='1'>
                     <img src="plus_button.svg" class="icon-button" id="plus-button">
                 </div>
             </label>
