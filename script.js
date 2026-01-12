@@ -17,6 +17,7 @@ const cancelCharacterCreationButton = document.querySelector('#cancel-character-
 const characterOverviewContainer = document.querySelector('#character-overview');
 const characterSubraceSelect = document.querySelector('#character-subrace');
 const subraceSelectContainer = document.querySelector('#subrace-select-container');
+const characterBackstoryTextArea = document.querySelector('#character-backstory');
 
 // DOM elements for ability scores
 const abilityScoreMethodSelect = document.querySelector('#ability-score-method');
@@ -30,6 +31,7 @@ const alertBoxTitle = alertBox.querySelector('.title');
 const alertBoxDescription = alertBox.querySelector('.description');
 
 let perDiceRollOutput = document.querySelector('#per-dice-roll-output');
+let characterBackstory = characterBackstoryTextArea.value;
 
 // Hide backdrop initially
 backdrop.style.display = 'none';
@@ -396,8 +398,6 @@ createCharacterButton.addEventListener('click', () => {
     console.log('Create character form displayed');
 });
 
-
-
 // Load character button events
 loadCharacterButton.addEventListener('click', () => {
     console.log('Load character button pressed');
@@ -407,11 +407,13 @@ loadCharacterButton.addEventListener('click', () => {
     console.log('Load character alert displayed');
 })
 
-
-
 // Test roll button events
 testRollButton.addEventListener('click', () => {
     console.log('Test roll button pressed');
+
+    let thisButton = document.querySelector('#test-roll');
+
+    thisButton.style.display = 'none';
 
     alertBox.style.display = 'flex';
     body.style.overflow = 'hidden';
@@ -535,8 +537,11 @@ testRollButton.addEventListener('click', () => {
     cancelTestButton.addEventListener('click', () => {
         console.log('Cancel test roll button pressed');
 
+        let thisButton = document.querySelector('#test-roll');
+
         alertBox.style.display = 'none';
         body.style.overflow = 'auto';
+        thisButton.style.display = 'block';
 
         console.log('Alert box successfully hidden');
     });
@@ -678,6 +683,8 @@ characterResetButton.addEventListener('click', () => {
 // Cancel character creation button events
 cancelCharacterCreationButton.addEventListener('click', () => {
     console.log('Cancel character creation button pressed');
+
+    testRollButton.style.display = 'flex';
 
     // Trigger reset button to clear form fields
     characterResetButton.click();
