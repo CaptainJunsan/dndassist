@@ -526,7 +526,7 @@ testRollButton.addEventListener('click', () => {
         testDifficulty.value = '0';
         testResultOutput.innerHTML = '';
 
-        dcValuetext.ineerHTML = testDifficulty.value;
+        dcValuetext.innerHTML = testDifficulty.value;
 
         testResultOutput.style.backgroundColor = ''; // Reset to default
         testResultOutput.style.fontSize = ''; // Reset to default
