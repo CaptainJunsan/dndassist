@@ -589,6 +589,7 @@ input[type="range"]::-webkit-slider-thumb {
 .alert-box>.description {
     width: 100%;
     margin-bottom: 0;
+    font-size: 14px;
 }
 
 .alert-box label {
