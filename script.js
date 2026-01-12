@@ -610,12 +610,43 @@ testRollButton.addEventListener('click', () => {
 characterResetButton.addEventListener('click', () => {
     console.log('Character reset button pressed');
 
+    // Reset basic character info
     characterNameInput.value = '';
     characterRaceSelect.value = 'Select a race';
     characterClassSelect.value = 'Select a class';
     characterSexSelect.value = 'Select a sex';
     characterSubraceSelect.value = '';
     subraceSelectContainer.style.display = 'none';
+
+    // Reset ability score method
+    abilityScoreMethodSelect.value = '';
+
+    // Reset ability score state
+    abilityScoreState.method = null;
+    abilityScoreState.availableScores = [];
+    abilityScoreState.assignedScores = { str: null, dex: null, con: null, int: null, wis: null, cha: null };
+    abilityScoreState.selectedChip = null;
+
+    // Hide ability score containers
+    availableScoresContainer.style.display = 'none';
+    abilityAssignmentContainer.style.display = 'none';
+    rerollScoresButton.style.display = 'none';
+
+    // Clear all slot displays and styling
+    ['str', 'dex', 'con', 'int', 'wis', 'cha'].forEach(ability => {
+        const slot = document.querySelector(`#${ability}-slot .score-value`);
+        if (slot) {
+            slot.textContent = '--';
+        }
+        const slotContainer = document.querySelector(`#${ability}-slot`);
+        if (slotContainer) {
+            slotContainer.classList.remove('filled');
+            slotContainer.style.border = '';
+        }
+    });
+
+    // Clear available scores display
+    availableScoresDiv.innerHTML = '';
 
     updateCharacterOverview();
 
@@ -963,6 +994,28 @@ function updateFinalScores() {
     updateCharacterOverview();
 }
 
+// Style available ability score slots (unfilled ones get blue border)
+function styleAvailableScoreSlots() {
+    let abilityScores = document.querySelectorAll('.ability-score-slot');
+
+    abilityScores.forEach(scoreSlot => {
+        let scoreValue = scoreSlot.querySelector('.score-value');
+        if (scoreValue && scoreValue.innerHTML == "--") {
+            scoreSlot.style.border = 'solid 2px #007bff';
+        } else {
+            scoreSlot.style.border = '';
+        }
+    })
+}
+
+function resetScoreSlotBorders() {
+    let abilityScores = document.querySelectorAll('.ability-score-slot');
+
+    abilityScores.forEach(scoreSlot => {
+        scoreSlot.style.border = '';
+    })
+}
+
 // Generate score chips
 function generateScoreChips(scores) {
     availableScoresDiv.innerHTML = '';
@@ -976,6 +1029,9 @@ function generateScoreChips(scores) {
         chip.dataset.index = index;
 
         chip.addEventListener('click', () => {
+            // Highlight available ability score slots when selecting a score chip
+            styleAvailableScoreSlots();
+
             // Deselect previous chip
             document.querySelectorAll('.score-chip').forEach(c => c.classList.remove('selected'));
 
@@ -986,7 +1042,6 @@ function generateScoreChips(scores) {
 
         availableScoresDiv.appendChild(chip);
     });
-    // ✅ REROLL LISTENER REMOVED FROM HERE
 }
 
 // Assign score to ability
@@ -1008,6 +1063,10 @@ function assignScoreToAbility(ability, score) {
     // Regenerate chips
     generateScoreChips(abilityScoreState.availableScores);
     abilityScoreState.selectedChip = null;
+
+    // Update styling of remaining slots
+    styleAvailableScoreSlots();
+    resetScoreSlotBorders();
 
     // Update final scores
     updateFinalScores();
@@ -1032,6 +1091,9 @@ function removeScoreFromAbility(ability) {
 
     // Regenerate chips
     generateScoreChips(abilityScoreState.availableScores);
+
+    // Update styling of remaining slots
+    styleAvailableScoreSlots();
 
     // Update final scores
     updateFinalScores();
