@@ -522,12 +522,16 @@ testRollButton.addEventListener('click', () => {
         }
 
         diceCountValueUpdate();
+
+        testDiceCount.blur();
     })
 
     plusBtn.addEventListener('click', () => {
         testDiceCount.value++;
 
         diceCountValueUpdate();
+
+        testDiceCount.blur();
     })
 
     testDifficulty.addEventListener('input', () => {
