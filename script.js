@@ -462,7 +462,7 @@ testRollButton.addEventListener('click', () => {
             <p id='test-result-output'></p>
         </div>
         <br><br>
-        <div class="button-row">
+        <div class="button-row full">
             <button type='button' class='button danger' id='cancel-test-roll-button'>Cancel</button>
             <button type='button' class='button secondary' id='reset-test-roll-button'>Reset</button>
             <button type='button' class='button' id='test-roll-button'><img src='uiButtonIcon_white.svg'>Roll Dice</button>

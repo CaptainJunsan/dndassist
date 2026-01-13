@@ -615,7 +615,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .alert-box .button-row {
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .alert-box .button-row-left {
