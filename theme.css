@@ -224,9 +224,9 @@ body {
 }
 
 .backdrop {
-    inset: 0;
     display: none;
-    position: absolute;
+    position: fixed;
+    inset: 0;
     margin: 0;
     padding: 0;
     border: none;
