@@ -226,13 +226,15 @@ body {
 .backdrop {
     inset: 0;
     display: none;
-    position: fixed;
+    position: absolute;
     margin: 0;
     padding: 0;
     border: none;
     border-radius: 0;
     width: 100vw;
     height: 100vh;
+    top: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 9999;
 }
