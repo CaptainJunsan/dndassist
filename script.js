@@ -512,7 +512,8 @@ testRollButton.addEventListener('click', () => {
 
     diceCountValueUpdate();
 
-    minusBtn.addEventListener('click', () => {
+    minusBtn.addEventListener('click', (event) => {
+        event.preventDefault();
         diceCountValueUpdate();
 
         testDiceCount.value--;
@@ -526,7 +527,8 @@ testRollButton.addEventListener('click', () => {
         testDiceCount.blur();
     })
 
-    plusBtn.addEventListener('click', () => {
+    plusBtn.addEventListener('click', (event) => {
+        event.preventDefault();
         testDiceCount.value++;
 
         diceCountValueUpdate();
