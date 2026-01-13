@@ -567,6 +567,7 @@ testRollButton.addEventListener('click', () => {
         perDiceRollOutput.innerHTML = '';
 
         clearSelectedDice();
+        diceCountValueUpdate();
 
         console.log('Test roll inputs reset');
     });
