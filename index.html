@@ -191,9 +191,32 @@
         <div class="column-container" id="character-overview"></div>
     </div>
 
+    <div class="container" id="character-list-container">
+        <h2 class="title form-title">Your Characters</h2>
+        <p class="description">View, edit, or delete your existing characters</p>
+        <div class="item-list" id="character-sheets">
+            <div class="character-sheet">
+                <div class="row gap-5 vertical-center">
+                    <h4>Character Name</h4>
+                    <p>Race</p>
+                    <p>Class</p>
+                    <p>Background</p>
+                    <p>Level/XP</p>
+                </div>
+                <button type="button" class="button char-sheet-option-button">Options</button>
+            </div>
+        </div>
+    </div>
+
     <div class="alert-box" id="main-alert-box">
         <h3 class="title">This is an error</h3>
         <p class="description">This is the description for said error.</p>
+    </div>
+
+    <div class="menu context-menu">
+        <button type="button" class="button menu-item" id="view-button">View</button>
+        <button type="button" class="button menu-item" id="edit-button">Edit</button>
+        <button type="button" class="button menu-item" id="delete-button">Delete</button>
     </div>
 
     <!-- Menu Button -->
@@ -203,20 +226,20 @@
     <button type="button" class="roll-icon-button" id="test-roll"><img src="uiButtonIcon_white.svg"></button>
 
     <div class="backdrop">
-        <div class="menu" id="session-menu">
+        <div class="menu main-menu" id="session-menu">
             <button type="button" class="button menu-item" id="login-button">Login</button>
             <button type="button" class="button menu-item" id="help-button">Help</button>
         </div>
     </div>
 
     <!-- Equipment script file tag -->
-     <script src="equipment.js"></script>
+    <script src="equipment.js"></script>
 
     <!-- Backgrounds file script tag -->
-     <script src="backgrounds.js"></script>
+    <script src="backgrounds.js"></script>
 
     <!-- Skills file script tag -->
-     <script src="skills.js"></script>
+    <script src="skills.js"></script>
 
     <!-- Class file script tag -->
     <script src="classes.js"></script>

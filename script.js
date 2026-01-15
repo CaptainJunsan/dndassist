@@ -4,6 +4,8 @@ const backdrop = document.querySelector('.backdrop');
 const menuButton = document.querySelector('#menu-button');
 const loginButton = document.querySelector('#login-button');
 const helpBUtton = document.querySelector('#help-button');
+const charSheetOptionButton = document.querySelector('.char-sheet-option-button');
+const contextMenu = document.querySelector('.context-menu');
 const createCharacterButton = document.querySelector('#create-character-button');
 const createCharacterFormContainer = document.querySelector('#create-character-form');
 const loadCharacterButton = document.querySelector('#load-character-button');
@@ -378,6 +380,24 @@ loginButton.addEventListener('click', () => {
 helpBUtton.addEventListener('click', () => {
     alert("Help feature coming soon :)");
 })
+
+charSheetOptionButton.addEventListener('click', () => {
+    // set the contextMenu position to the same as the carsheetOptionButton position
+    const rect = charSheetOptionButton.getBoundingClientRect();
+    contextMenu.style.position = 'fixed';
+    contextMenu.style.top = (rect.bottom + 5) + 'px';
+    contextMenu.style.left = rect.left + 'px';
+    contextMenu.style.display = 'block';
+});
+
+// clear the contextMenu display or set it to '' when clicking outside the contextMenu item
+document.addEventListener('click', (event) => {
+    if (contextMenu.style.display === 'block' && 
+        !contextMenu.contains(event.target) && 
+        !charSheetOptionButton.contains(event.target)) {
+        contextMenu.style.display = 'none';
+    }
+});
 
 window.addEventListener('resize', function () {
     // Get the new window width
